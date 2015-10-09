@@ -27,4 +27,6 @@ class fetchAndParse:
 
 if __name__ == "__main__":
     fetchandparser = fetchAndParse()
-    print(fetchandparser.getshows())
+    shows = fetchandparser.getshows()
+    print('Found {} shows'.format(len(shows)))
+
