@@ -30,8 +30,68 @@ class fetchAndParse:
         tree = html.fromstring(page.text)
 
         # get the text on the buttons inside the s1 div
-        seasons = tree.xpath('//div[@id="sl"]/button/text()')
+        seasons_str = tree.xpath('//div[@id="sl"]/button/text()')
+        seasons = []
+        for season in seasons_str:
+            seasons.append(int(season))
+
         return seasons
+
+    def getsubtitlelist(self, showvalue, season):
+        page = requests.get('http://www.addic7ed.com/ajax_loadShow.php?show={}&season={}'.format(showvalue, season))
+        tree = html.fromstring(page.text)
+
+        seasons = tree.xpath('//div[@id="season"]/table/tbody/tr/td[1]/text()')
+        episodes = tree.xpath('//div[@id="season"]/table/tbody/tr/td[2]/text()')
+        names = tree.xpath('//div[@id="season"]/table/tbody/tr/td[3]/a/text()')
+        languages = tree.xpath('//div[@id="season"]/table/tbody/tr/td[4]/text()')
+        versions = tree.xpath('//div[@id="season"]/table/tbody/tr/td[5]')
+        completed = tree.xpath('//div[@id="season"]/table/tbody/tr/td[6]')
+        hi = tree.xpath('//div[@id="season"]/table/tbody/tr/td[7]')
+        corrected = tree.xpath('//div[@id="season"]/table/tbody/tr/td[8]')
+        hd = tree.xpath('//div[@id="season"]/table/tbody/tr/td[9]')
+        dl_links = tree.xpath('//div[@id="season"]/table/tbody/tr/td[10]/a/@href')
+
+        for i in range(0, len(seasons)):
+            if hd[i].text == '\u2714':
+                hd[i] = True
+            else:
+                hd[i] = False
+
+            if corrected[i].text == '\u2714':
+                corrected[i] = True
+            else:
+                corrected[i] = False
+
+            if versions[i].text is None:
+                versions[i] = ''
+            else:
+                versions[i] = versions[i].text
+
+            if completed[i].text == "Completed":
+                completed[i] = True
+            else:
+                completed[i] = False
+
+            if hi[i].text == '\u2714':
+                hi[i] = True
+            else:
+                hi[i] = False
+
+        episodelist = []
+        for i in range(0, len(seasons)):
+            episodelist.append({'season': seasons[i],
+                                'episode': episodes[i],
+                                'name': names[i],
+                                'language': languages[i],
+                                'versions': versions[i],
+                                'completed': completed[i],
+                                'hi': hi[i],
+                                'corrected': corrected[i],
+                                'hd': hd[i],
+                                'dl link': dl_links[i]})
+        return episodelist
+
 
 if __name__ == "__main__":
     fetchandparser = fetchAndParse()
@@ -41,5 +101,8 @@ if __name__ == "__main__":
     trueblood_seasons = fetchandparser.getseasons(366)
     print("Found {} seasons in the True Blood show:".format(len(trueblood_seasons)))
     print(trueblood_seasons)
+
+    sublist = fetchandparser.getsubtitlelist(366, 1)
+    print('Found {} subtitles in season 1 of True Blood'.format(len(sublist)))
 
 
