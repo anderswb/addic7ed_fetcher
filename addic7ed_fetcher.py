@@ -52,20 +52,26 @@ class PageOne(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Page One!!!", font=LARGE_FONT)
+        label = ttk.Label(self, text="Select a show:")
         label.pack(pady=10, padx=10)
-
-        button1 = ttk.Button(self, text="Go to page two",
-                             command=lambda: controller.show_frame(PageTwo))
-        button1.pack()
 
         shows = fetchAndParse.getshows(self)
         shows_sorted = sorted( ((v,k) for k,v in shows.items()), reverse=True)
-        listbox1 = tk.Listbox(self)
+
+        scrollbar = tk.Scrollbar(self, orient="vertical")
+        listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
+        scrollbar.config(command=listbox1.yview)
+
+        scrollbar.pack(side="right", fill="y")
+
         for show in shows_sorted:
             listbox1.insert(0, show[0])
 
-        listbox1.pack()
+        listbox1.pack(side="top",fill="both", expand=True)
+
+        button1 = ttk.Button(self, text="Go to page two",
+                             command=lambda: controller.show_frame(PageTwo))
+        button1.pack(side="bottom")
 
 
 class PageTwo(tk.Frame):
