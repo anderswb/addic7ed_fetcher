@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from fnmatch import fnmatchcase
 
 from fetchandparse import fetchAndParse
 
@@ -50,28 +51,41 @@ class TkinterTestApp(tk.Tk):
 
 class PageOne(tk.Frame):
 
+    def updatelist(self, searchterm):
+        print(searchterm)
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Select a show:")
-        label.pack(pady=10, padx=10)
+        label1 = ttk.Label(self, text="Select a show:")
 
+        searchentry = ttk.Entry(self)
+        searchentry.insert(0, '*')
+        searchentry.bind("<Return>",(lambda event: PageOne.updatelist(self, searchentry.get())))
+
+
+        label2 = ttk.Label(self, text="Search:")
         shows = fetchAndParse.getshows(self)
-        shows_sorted = sorted( ((v,k) for k,v in shows.items()), reverse=True)
 
         scrollbar = tk.Scrollbar(self, orient="vertical")
         listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
         scrollbar.config(command=listbox1.yview)
 
-        scrollbar.pack(side="right", fill="y")
+        for show in shows:
+            listbox1.insert(0, show[1])
 
-        for show in shows_sorted:
-            listbox1.insert(0, show[0])
-
-        listbox1.pack(side="top",fill="both", expand=True)
+        listbox1.insert(0,"123")
 
         button1 = ttk.Button(self, text="Go to page two",
                              command=lambda: controller.show_frame(PageTwo))
-        button1.pack(side="bottom")
+
+        label1.grid(row=0)
+        searchentry.grid(row=1, sticky='ew')
+        listbox1.grid(row=2, column=0, sticky='nsew')
+        scrollbar.grid(row=2, column=1, sticky='nse')
+        button1.grid(row=3)
+
+        tk.Grid.grid_columnconfigure(self, 0, weight=1)
+        tk.Grid.grid_rowconfigure(self, 2, weight=1)
 
 
 class PageTwo(tk.Frame):
