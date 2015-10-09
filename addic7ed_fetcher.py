@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from fnmatch import fnmatchcase
+from fnmatch import fnmatch
 
 from fetchandparse import fetchAndParse
 
@@ -20,7 +20,7 @@ def popupmsg(msg):
 class TkinterTestApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        tk.Tk.wm_title(self, "tkinter Test App")
+        tk.Tk.wm_title(self, "Addic7ed Fetcher")
         
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -52,7 +52,10 @@ class TkinterTestApp(tk.Tk):
 class PageOne(tk.Frame):
 
     def updatelist(self, searchterm):
-        print(searchterm)
+        self.listbox1.delete(0, 'end')
+        for show in self.shows:
+            if fnmatch(show[1].lower(), searchterm.lower()):
+                self.listbox1.insert(0, show[1])
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -62,25 +65,22 @@ class PageOne(tk.Frame):
         searchentry.insert(0, '*')
         searchentry.bind("<Return>",(lambda event: PageOne.updatelist(self, searchentry.get())))
 
-
         label2 = ttk.Label(self, text="Search:")
-        shows = fetchAndParse.getshows(self)
+        self.shows = fetchAndParse.getshows(self)
 
         scrollbar = tk.Scrollbar(self, orient="vertical")
-        listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
-        scrollbar.config(command=listbox1.yview)
+        self.listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.listbox1.yview)
 
-        for show in shows:
-            listbox1.insert(0, show[1])
-
-        listbox1.insert(0,"123")
+        for show in self.shows:
+            self.listbox1.insert(0, show[1])
 
         button1 = ttk.Button(self, text="Go to page two",
                              command=lambda: controller.show_frame(PageTwo))
 
         label1.grid(row=0)
-        searchentry.grid(row=1, sticky='ew')
-        listbox1.grid(row=2, column=0, sticky='nsew')
+        searchentry.grid(row=1, sticky='ew', columnspan=2)
+        self.listbox1.grid(row=2, column=0, sticky='nsew')
         scrollbar.grid(row=2, column=1, sticky='nse')
         button1.grid(row=3)
 
