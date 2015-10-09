@@ -25,8 +25,21 @@ class fetchAndParse:
 
         return shows
 
+    def getseasons(self, showvalue):
+        page = requests.get('http://www.addic7ed.com/show/{}'.format(showvalue))
+        tree = html.fromstring(page.text)
+
+        # get the text on the buttons inside the s1 div
+        seasons = tree.xpath('//div[@id="sl"]/button/text()')
+        return seasons
+
 if __name__ == "__main__":
     fetchandparser = fetchAndParse()
     shows = fetchandparser.getshows()
     print('Found {} shows'.format(len(shows)))
+
+    trueblood_seasons = fetchandparser.getseasons(366)
+    print("Found {} seasons in the True Blood show:".format(len(trueblood_seasons)))
+    print(trueblood_seasons)
+
 
