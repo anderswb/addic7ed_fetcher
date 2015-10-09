@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from fetchandparse import fetchAndParse
+
 LARGE_FONT= ("Verdana", 12)
 NORM_FONT= ("Verdana", 10)
 SMALL_FONT= ("Verdana", 8)
@@ -56,6 +58,14 @@ class PageOne(tk.Frame):
         button1 = ttk.Button(self, text="Go to page two",
                              command=lambda: controller.show_frame(PageTwo))
         button1.pack()
+
+        shows = fetchAndParse.getshows(self)
+        shows_sorted = sorted( ((v,k) for k,v in shows.items()), reverse=True)
+        listbox1 = tk.Listbox(self)
+        for show in shows_sorted:
+            listbox1.insert(0, show[0])
+
+        listbox1.pack()
 
 
 class PageTwo(tk.Frame):
