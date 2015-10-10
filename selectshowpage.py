@@ -10,18 +10,22 @@ __author__ = 'Anders'
 
 class SelectShowPage(tk.Frame):
 
+    selectedshow = ()
+
     def updatelist(self, searchterm):
         self.listbox1.delete(0, 'end')
         for show in self.shows:
             if fnmatch(show[1].lower(), searchterm.lower()):
                 self.listbox1.insert(0, show[1])
 
+    def updatedisplay(self):
+        pass
+
     def nextpage(self, controller):
         selection = self.listbox1.curselection()
         if len(selection) > 0:
             selectedshowtitle = self.listbox1.get(selection[0])
-            selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
-            subtitleselectionpage.SubtitleSelectionPage.updatedisplay(self, selectedshow)
+            SelectShowPage.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
             controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
             popupmsg(controller, "Error", "Please make a selection!")

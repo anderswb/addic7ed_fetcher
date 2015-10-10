@@ -34,6 +34,7 @@ class TkinterTestApp(tk.Tk):
         
     def show_frame(self, content):
         frame = self.frames[content]
+        frame.updatedisplay()
         frame.tkraise()
 
 if __name__ == "__main__":
