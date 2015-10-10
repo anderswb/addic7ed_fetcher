@@ -9,11 +9,11 @@ LARGE_FONT= ("Verdana", 12)
 NORM_FONT= ("Verdana", 10)
 SMALL_FONT= ("Verdana", 8)
 
-def popupmsg(msg):
+def popupmsg(title, msg):
     popup = tk.Tk()
-    popup.wm_title("!")
+    popup.wm_title(title)
     label = ttk.Label(popup, text=msg, font=NORM_FONT)
-    label.pack(side="top", fill="x", pady=10)
+    label.pack(side="top", fill="x", pady=10, padx=10)
     B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
     B1.pack()
     popup.mainloop()
@@ -59,10 +59,14 @@ class SelectShowPage(tk.Frame):
                 self.listbox1.insert(0, show[1])
 
     def nextpage(self, controller):
-        selectedshowtitle = self.listbox1.get((self.listbox1.curselection()[0]))
-        selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
-        SubtitleSelectionPage.updatedisplay(self,selectedshow)
-        controller.show_frame(SubtitleSelectionPage)
+        selection = self.listbox1.curselection()
+        if len(selection) > 0:
+            selectedshowtitle = self.listbox1.get(selection[0])
+            selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
+            SubtitleSelectionPage.updatedisplay(self,selectedshow)
+            controller.show_frame(SubtitleSelectionPage)
+        else:
+            popupmsg("Error", "Please make a selection!")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
