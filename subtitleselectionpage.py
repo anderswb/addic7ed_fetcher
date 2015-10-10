@@ -17,8 +17,6 @@ class SubtitleSelectionPage(tk.Frame):
         button1 = ttk.Button(self, text="Go to page one",
                              command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
 
-
-
         SubtitleSelectionPage.notebook = ttk.Notebook(self)
 
         SubtitleSelectionPage.label1.grid(row=0, column=0)
@@ -52,4 +50,3 @@ class SubtitleSelectionPage(tk.Frame):
                 for label in dataset_labels:
                     data.append(eachdataset[label])
                 tree.insert('', 'end', values=data)
-
