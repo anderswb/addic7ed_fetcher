@@ -31,8 +31,13 @@ class SubtitleSelectionPage(tk.Frame):
         SubtitleSelectionPage.label1.config(text=selectedshow[1])
         seasons = FetchAndParse.getseasons(selectedshow[0])
         columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
+
+        # make sure there's no tabs displayed
+        for tab in SubtitleSelectionPage.notebook.tabs():
+            SubtitleSelectionPage.notebook.forget(tab)
+
         for eachseason in seasons:
-            frame = ttk.Frame(SubtitleSelectionPage.notebook)
+            frame = ttk.Frame(SubtitleSelectionPage.notebook) # use the notebook frame
             SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))
 
             tree = ttk.Treeview(frame, columns=columns, show='headings')
