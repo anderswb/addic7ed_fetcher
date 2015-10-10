@@ -46,16 +46,10 @@ class SubtitleSelectionPage(tk.Frame):
                 tree.column(c, width=Font().measure(c.title()))
 
             dataset = FetchAndParse.getsubtitlelist(self, selectedshow[0], eachseason)
+            dataset_labels = ['episode', 'name', 'language', 'versions', 'completed', 'hi', 'corrected', 'hd']
             for eachdataset in dataset:
                 data = []
-                data.append(eachdataset['episode'])
-                data.append(eachdataset['name'])
-                data.append(eachdataset['language'])
-                data.append(eachdataset['versions'])
-                data.append(eachdataset['completed'])
-                data.append(eachdataset['hi'])
-                data.append(eachdataset['corrected'])
-                data.append(eachdataset['hd'])
-
+                for label in dataset_labels:
+                    data.append(eachdataset[label])
                 tree.insert('', 'end', values=data)
 
