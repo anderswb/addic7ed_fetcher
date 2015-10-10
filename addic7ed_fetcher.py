@@ -38,18 +38,18 @@ class TkinterTestApp(tk.Tk):
         
         self.frames = {}
         
-        for F in (PageOne, PageTwo):
+        for F in (SelectShowPage, PageTwo):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         
-        self.show_frame(PageOne)
+        self.show_frame(SelectShowPage)
         
     def show_frame(self, content):
         frame = self.frames[content]
         frame.tkraise()
 
-class PageOne(tk.Frame):
+class SelectShowPage(tk.Frame):
 
     def updatelist(self, searchterm):
         self.listbox1.delete(0, 'end')
@@ -63,7 +63,7 @@ class PageOne(tk.Frame):
 
         searchentry = ttk.Entry(self)
         searchentry.insert(0, '*')
-        searchentry.bind("<Return>",(lambda event: PageOne.updatelist(self, searchentry.get())))
+        searchentry.bind("<Return>",(lambda event: SelectShowPage.updatelist(self, searchentry.get())))
 
         label2 = ttk.Label(self, text="Search:")
         self.shows = fetchAndParse.getshows(self)
@@ -96,7 +96,7 @@ class PageTwo(tk.Frame):
         label.pack(pady=10, padx=10)
 
         button1 = ttk.Button(self, text="Go to page one",
-                             command=lambda: controller.show_frame(PageOne))
+                             command=lambda: controller.show_frame(SelectShowPage))
         button1.pack()
 
         
