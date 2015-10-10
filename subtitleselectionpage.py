@@ -52,9 +52,9 @@ class SubtitleSelectionPage(tk.Frame):
 
         # Setup the dropdown menu
 
-        dropdownvar = tk.StringVar(self)
-        dropdownvar.set("one")  # default value
-        dropdown = ttk.OptionMenu(self, dropdownvar, "one", "two", "three")
+        self.dropdownvar = tk.StringVar(self)
+        self.dropdownvar.set("All languages")  # default value
+        self.dropdown = ttk.OptionMenu(self, self.dropdownvar, "All languages")
 
         # Add to the grid
         SubtitleSelectionPage.label1.grid(row=0, column=0, columnspan=4)
@@ -63,7 +63,7 @@ class SubtitleSelectionPage(tk.Frame):
         self.check_hi.grid(row=2, column=0)
         self.check_hd.grid(row=2, column=1)
         self.check_cor.grid(row=2, column=2)
-        dropdown.grid(row=2, column=3)
+        self.dropdown.grid(row=2, column=3)
 
         button1.grid(row=3, column=0)
 
@@ -82,6 +82,7 @@ class SubtitleSelectionPage(tk.Frame):
         for tab in SubtitleSelectionPage.notebook.tabs():
             SubtitleSelectionPage.notebook.forget(tab)
 
+        # populate everything
         for eachseason in seasons:
             frame = ttk.Frame(SubtitleSelectionPage.notebook)  # use the notebook frame
             SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))
@@ -102,6 +103,18 @@ class SubtitleSelectionPage(tk.Frame):
                 for label in SubtitleSelectionPage.dataset_labels:
                     data.append(episodesub[label])
                 self.trees[eachseason].insert('', 'end', values=data)
+
+        # Populate languages filter dropdown menu
+        languages = FetchAndParse.getlanguages(self.dataset)
+        menu = self.dropdown["menu"]
+        menu.delete(0, "end")
+        menu.add_command(label="All languages",
+                         command=lambda value="All languages":
+                         self.dropdownvar.set(value))
+        for language in languages:
+            menu.add_command(label=language,
+                             command=lambda value=language:
+                             self.dropdownvar.set(value))
 
     def hdchanged(self):
         if self.last_hd_state == 'off':
