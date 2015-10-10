@@ -11,7 +11,7 @@ def center(toplevel):
     size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
     x = w/2 - size[0]/2
     y = h/2 - size[1]/2
-    toplevel.geometry("%dx%d+%d+%d" % (size + (x, y)))
+    toplevel.geometry("{}x{}+{}+{}".format(size[0], size[1], int(x), int(y)))
 
 
 def close(popup, parent_frame):
