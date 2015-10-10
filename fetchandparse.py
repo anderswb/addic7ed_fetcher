@@ -96,6 +96,21 @@ class FetchAndParse:
                                 'dl link': dl_links[i]})
         return episodelist
 
+    @staticmethod
+    def getlanguages(episodes_datasets):
+        languages = set()
+
+        if isinstance(episodes_datasets, dict):  # if this is a dict of seasons containing lists of subtitles
+            for (season, datasets) in episodes_datasets.items():
+                for dataset in datasets:
+                    languages.add(dataset['language'])
+        elif isinstance(episodes_datasets, list):  # this is just a list of subtitles from a single season
+            for dataset in episodes_datasets:
+                languages.add(dataset['language'])
+        languages = list(languages)
+        languages.sort()
+        return languages
+
 
 if __name__ == "__main__":
     fetchedshows = FetchAndParse.getshows()
@@ -105,5 +120,22 @@ if __name__ == "__main__":
     print("Found {} seasons in the True Blood show:".format(len(trueblood_seasons)))
     print(trueblood_seasons)
 
-    sublist = FetchAndParse.getsubtitlelist(366, 1)
-    print('Found {} subtitles in season 1 of True Blood'.format(len(sublist)))
+    sublist1 = FetchAndParse.getsubtitlelist(366, 1)
+    print('Found {} subtitles in season 1 of True Blood'.format(len(sublist1)))
+
+    sublist2 = FetchAndParse.getsubtitlelist(366, 2)
+
+    dataset = {}
+    dataset[1] = sublist1
+    dataset[2] = sublist2
+
+    fetchedlanguages = FetchAndParse.getlanguages(sublist1)
+    print("Found {} languages in season 1 of True Blood:".format(len(fetchedlanguages)))
+
+    fetchedlanguages = FetchAndParse.getlanguages(sublist2)
+    print("Found {} languages in season 2 of True Blood:".format(len(fetchedlanguages)))
+
+    fetchedlanguages = FetchAndParse.getlanguages(dataset)
+    print("Found {} languages in season 1 and 2 of True Blood:".format(len(fetchedlanguages)))
+
+    print(fetchedlanguages)
