@@ -3,6 +3,7 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
+from popupmessages import popupmsg
 
 __author__ = 'Anders'
 
@@ -20,8 +21,10 @@ class SubtitleSelectionPage(tk.Frame):
 
         SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
 
-        button1 = ttk.Button(self, text="Go to page one",
+        button_back = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
+        button_ok = ttk.Button(self, text="OK",
+                               command=lambda: popupmsg(controller, "Note", "Not implemented yet!"))
 
         SubtitleSelectionPage.notebook = ttk.Notebook(self)
 
@@ -65,7 +68,8 @@ class SubtitleSelectionPage(tk.Frame):
         self.check_cor.grid(row=2, column=2)
         self.dropdown.grid(row=2, column=3)
 
-        button1.grid(row=3, column=0)
+        button_back.grid(row=3, columnspan=4, sticky='w')
+        button_ok.grid(row=3, columnspan=4, sticky='e')
 
         tk.Grid.grid_columnconfigure(self, 0, weight=1)
         tk.Grid.grid_columnconfigure(self, 1, weight=1)
