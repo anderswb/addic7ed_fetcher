@@ -45,9 +45,9 @@ class SubtitleSelectionPage(tk.Frame):
             tk.Grid.grid_rowconfigure(frame, 0, weight=1)
             tk.Grid.grid_columnconfigure(frame, 0, weight=1)
 
-            for c in columns:
-                tree.heading(c, text=c.title())
-                tree.column(c, width=Font().measure(c.title()))
+            for column in columns:
+                tree.heading(column, text=column.title())
+                tree.column(column, width=Font().measure(column.title()))
 
             dataset = FetchAndParse.getsubtitlelist(selectedshow[0], eachseason)
             dataset_labels = ['episode', 'name', 'language', 'versions', 'completed', 'hi', 'corrected', 'hd']
