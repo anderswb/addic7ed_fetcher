@@ -1,13 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from fetchandparse import FetchAndParse
-from tkinter.font import Font
-import addic7ed_fetcher
 import subtitleselectionpage
 from fnmatch import fnmatch
 from popupmessages import popupmsg
 
 __author__ = 'Anders'
+
 
 class SelectShowPage(tk.Frame):
 
@@ -22,7 +21,7 @@ class SelectShowPage(tk.Frame):
         if len(selection) > 0:
             selectedshowtitle = self.listbox1.get(selection[0])
             selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
-            subtitleselectionpage.SubtitleSelectionPage.updatedisplay(self,selectedshow)
+            subtitleselectionpage.SubtitleSelectionPage.updatedisplay(self, selectedshow)
             controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
             popupmsg(controller, "Error", "Please make a selection!")
@@ -33,9 +32,8 @@ class SelectShowPage(tk.Frame):
 
         searchentry = ttk.Entry(self)
         searchentry.insert(0, '*')
-        searchentry.bind("<Return>",(lambda event: self.updatelist(searchentry.get())))
+        searchentry.bind("<Return>", (lambda event: self.updatelist(searchentry.get())))
 
-        label2 = ttk.Label(self, text="Search:")
         self.shows = FetchAndParse.getshows(self)
 
         scrollbar = ttk.Scrollbar(self, orient="vertical")

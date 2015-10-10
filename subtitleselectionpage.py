@@ -6,6 +6,7 @@ import selectshowpage
 
 __author__ = 'Anders'
 
+
 class SubtitleSelectionPage(tk.Frame):
     label1 = None
     notebook = None

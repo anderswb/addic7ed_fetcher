@@ -3,11 +3,12 @@ import subtitleselectionpage
 import selectshowpage
 from popupmessages import popupmsg
 
+
 class TkinterTestApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Addic7ed Fetcher")
-        
+
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
@@ -35,7 +36,7 @@ class TkinterTestApp(tk.Tk):
         frame = self.frames[content]
         frame.tkraise()
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app = TkinterTestApp()
     app.geometry("1000x500")
     app.mainloop()
