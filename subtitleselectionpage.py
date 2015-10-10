@@ -29,7 +29,7 @@ class SubtitleSelectionPage(tk.Frame):
 
     def updatedisplay(self, selectedshow):
         SubtitleSelectionPage.label1.config(text=selectedshow[1])
-        seasons = FetchAndParse.getseasons(self, selectedshow[0])
+        seasons = FetchAndParse.getseasons(selectedshow[0])
         columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
         for eachseason in seasons:
             frame = ttk.Frame(SubtitleSelectionPage.notebook)
@@ -44,7 +44,7 @@ class SubtitleSelectionPage(tk.Frame):
                 tree.heading(c, text=c.title())
                 tree.column(c, width=Font().measure(c.title()))
 
-            dataset = FetchAndParse.getsubtitlelist(self, selectedshow[0], eachseason)
+            dataset = FetchAndParse.getsubtitlelist(selectedshow[0], eachseason)
             dataset_labels = ['episode', 'name', 'language', 'versions', 'completed', 'hi', 'corrected', 'hd']
             for eachdataset in dataset:
                 data = []

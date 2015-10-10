@@ -34,7 +34,7 @@ class SelectShowPage(tk.Frame):
         searchentry.insert(0, '*')
         searchentry.bind("<Return>", (lambda event: self.updatelist(searchentry.get())))
 
-        self.shows = FetchAndParse.getshows(self)
+        self.shows = FetchAndParse.getshows()
 
         scrollbar = ttk.Scrollbar(self, orient="vertical")
         self.listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)

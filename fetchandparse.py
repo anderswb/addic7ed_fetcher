@@ -6,7 +6,8 @@ __author__ = 'Anders'
 
 class FetchAndParse:
 
-    def getshows(self):
+    @staticmethod
+    def getshows():
         """
         Get the list of shows available from the main page of addic7ed
         :return: A list of tuple with the first entry being the addic7ed given value of the show,
@@ -26,7 +27,8 @@ class FetchAndParse:
         shows.sort(key=lambda tup: tup[1], reverse=True)
         return shows
 
-    def getseasons(self, showvalue):
+    @staticmethod
+    def getseasons(showvalue):
         page = requests.get('http://www.addic7ed.com/show/{}'.format(showvalue))
         tree = html.fromstring(page.text)
 
@@ -38,7 +40,8 @@ class FetchAndParse:
 
         return seasons
 
-    def getsubtitlelist(self, showvalue, season):
+    @staticmethod
+    def getsubtitlelist(showvalue, season):
         page = requests.get('http://www.addic7ed.com/ajax_loadShow.php?show={}&season={}'.format(showvalue, season))
         tree = html.fromstring(page.text)
 
@@ -95,15 +98,14 @@ class FetchAndParse:
 
 
 if __name__ == "__main__":
-    fetchandparser = FetchAndParse()
-    shows = fetchandparser.getshows()
+    shows = FetchAndParse.getshows()
     print('Found {} shows'.format(len(shows)))
 
-    trueblood_seasons = fetchandparser.getseasons(366)
+    trueblood_seasons = FetchAndParse.getseasons(366)
     print("Found {} seasons in the True Blood show:".format(len(trueblood_seasons)))
     print(trueblood_seasons)
 
-    sublist = fetchandparser.getsubtitlelist(366, 1)
+    sublist = FetchAndParse.getsubtitlelist(366, 1)
     print('Found {} subtitles in season 1 of True Blood'.format(len(sublist)))
 
 
