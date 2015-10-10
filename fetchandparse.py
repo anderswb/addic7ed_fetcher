@@ -4,7 +4,7 @@ import requests
 __author__ = 'Anders'
 
 
-class fetchAndParse:
+class FetchAndParse:
 
     def getshows(self):
         """
@@ -95,7 +95,7 @@ class fetchAndParse:
 
 
 if __name__ == "__main__":
-    fetchandparser = fetchAndParse()
+    fetchandparser = FetchAndParse()
     shows = fetchandparser.getshows()
     print('Found {} shows'.format(len(shows)))
 

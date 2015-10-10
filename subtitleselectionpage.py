@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from fetchandparse import fetchAndParse
+from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
 
@@ -30,7 +30,7 @@ class SubtitleSelectionPage(tk.Frame):
 
     def updatedisplay(self, selectedshow):
         SubtitleSelectionPage.label1.config(text=selectedshow[1])
-        seasons = fetchAndParse.getseasons(self, selectedshow[0])
+        seasons = FetchAndParse.getseasons(self, selectedshow[0])
         columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
         for eachseason in seasons:
             frame = ttk.Frame(SubtitleSelectionPage.notebook)
@@ -45,7 +45,7 @@ class SubtitleSelectionPage(tk.Frame):
                 tree.heading(c, text=c.title())
                 tree.column(c, width=Font().measure(c.title()))
 
-            dataset = fetchAndParse.getsubtitlelist(self, selectedshow[0], eachseason)
+            dataset = FetchAndParse.getsubtitlelist(self, selectedshow[0], eachseason)
             for eachdataset in dataset:
                 data = []
                 data.append(eachdataset['episode'])

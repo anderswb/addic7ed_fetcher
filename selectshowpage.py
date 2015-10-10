@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from fetchandparse import fetchAndParse
+from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import addic7ed_fetcher
 import subtitleselectionpage
@@ -35,7 +35,7 @@ class SelectShowPage(tk.Frame):
         searchentry.bind("<Return>",(lambda event: self.updatelist(searchentry.get())))
 
         label2 = ttk.Label(self, text="Search:")
-        self.shows = fetchAndParse.getshows(self)
+        self.shows = FetchAndParse.getshows(self)
 
         scrollbar = ttk.Scrollbar(self, orient="vertical")
         self.listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
