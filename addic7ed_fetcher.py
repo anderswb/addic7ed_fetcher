@@ -59,7 +59,7 @@ class SelectShowPage(tk.Frame):
 
     def nextpage(self, controller):
         selectedshowtitle = self.listbox1.get((self.listbox1.curselection()[0]))
-        selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle]
+        selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
         SubtitleSelectionPage.updatedisplay(self,selectedshow)
         controller.show_frame(SubtitleSelectionPage)
 
@@ -93,13 +93,12 @@ class SelectShowPage(tk.Frame):
 
 
 class SubtitleSelectionPage(tk.Frame):
-    test = None
+    label1 = None
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        self.label1 = ttk.Label(self, text="Unknown show")
-        self.label1.pack(pady=10, padx=10)
-        SubtitleSelectionPage.test = "asd"
+        SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
+        SubtitleSelectionPage.label1.pack(pady=10, padx=10)
 
         button1 = ttk.Button(self, text="Go to page one",
                              command=lambda: controller.show_frame(SelectShowPage))
@@ -107,7 +106,7 @@ class SubtitleSelectionPage(tk.Frame):
 
     def updatedisplay(self, selectedshow):
         print(SubtitleSelectionPage.test)
-        #self.label1.config(text=selectedshow[1])
+        SubtitleSelectionPage.label1.config(text=selectedshow[1])
 
 
         
