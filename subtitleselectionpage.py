@@ -22,7 +22,7 @@ class SubtitleSelectionPage(tk.Frame):
         SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
 
         button_back = ttk.Button(self, text="Back",
-                             command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
+                                 command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
         button_ok = ttk.Button(self, text="OK",
                                command=lambda: popupmsg(controller, "Note", "Not implemented yet!"))
 
