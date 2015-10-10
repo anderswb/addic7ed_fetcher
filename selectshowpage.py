@@ -5,6 +5,7 @@ from tkinter.font import Font
 import addic7ed_fetcher
 import subtitleselectionpage
 from fnmatch import fnmatch
+from popupmessages import popupmsg
 
 __author__ = 'Anders'
 
@@ -24,7 +25,7 @@ class SelectShowPage(tk.Frame):
             subtitleselectionpage.SubtitleSelectionPage.updatedisplay(self,selectedshow)
             controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
-            popupmsg("Error", "Please make a selection!")
+            popupmsg(controller, "Error", "Please make a selection!")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)

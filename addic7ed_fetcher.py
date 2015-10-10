@@ -1,16 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
 import subtitleselectionpage
 import selectshowpage
-
-def popupmsg(title, msg):
-    popup = tk.Tk()
-    popup.wm_title(title)
-    label = ttk.Label(popup, text=msg)
-    label.pack(side="top", fill="x", pady=10, padx=10)
-    B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-    B1.pack(pady=5)
-    popup.mainloop()
+from popupmessages import popupmsg
 
 class TkinterTestApp(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -24,7 +15,7 @@ class TkinterTestApp(tk.Tk):
 
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Save settings", command=lambda: popupmsg('Not supported just yet!'))
+        filemenu.add_command(label="Save settings", command=lambda: popupmsg(self, 'Note', 'Not supported just yet!'))
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
