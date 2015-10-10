@@ -42,14 +42,17 @@ class SelectShowPage(tk.Frame):
         scrollbar.config(command=self.listbox1.yview)
         self.updatelist('*')
 
-        button1 = ttk.Button(self, text="Ok...",
-                             command=lambda: self.nextpage(controller))
+        button_quit = ttk.Button(self, text="Exit",
+                                 command=quit)
+        button_ok = ttk.Button(self, text="OK",
+                               command=lambda: self.nextpage(controller))
 
         label1.grid(row=0)
         searchentry.grid(row=1, sticky='ew', columnspan=2)
         self.listbox1.grid(row=2, column=0, sticky='nsew')
         scrollbar.grid(row=2, column=1, sticky='nse')
-        button1.grid(row=3)
+        button_quit.grid(row=3, sticky='w')
+        button_ok.grid(row=3, sticky='e')
 
         tk.Grid.grid_columnconfigure(self, 0, weight=1)
         tk.Grid.grid_rowconfigure(self, 2, weight=1)
