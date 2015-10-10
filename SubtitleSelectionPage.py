@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from fetchandparse import fetchAndParse
 from tkinter.font import Font
-import SelectShowPage
+import selectshowpage
 
 __author__ = 'Anders'
 
@@ -15,7 +15,7 @@ class SubtitleSelectionPage(tk.Frame):
         SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
 
         button1 = ttk.Button(self, text="Go to page one",
-                             command=lambda: controller.show_frame(SelectShowPage.SelectShowPage))
+                             command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
 
 
 

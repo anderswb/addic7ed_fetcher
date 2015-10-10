@@ -3,7 +3,7 @@ from tkinter import ttk
 from fetchandparse import fetchAndParse
 from tkinter.font import Font
 import addic7ed_fetcher
-import SubtitleSelectionPage
+import subtitleselectionpage
 from fnmatch import fnmatch
 
 __author__ = 'Anders'
@@ -21,8 +21,8 @@ class SelectShowPage(tk.Frame):
         if len(selection) > 0:
             selectedshowtitle = self.listbox1.get(selection[0])
             selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
-            SubtitleSelectionPage.SubtitleSelectionPage.updatedisplay(self,selectedshow)
-            controller.show_frame(SubtitleSelectionPage.SubtitleSelectionPage)
+            subtitleselectionpage.SubtitleSelectionPage.updatedisplay(self,selectedshow)
+            controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
             popupmsg("Error", "Please make a selection!")
 

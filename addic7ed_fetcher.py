@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-import SubtitleSelectionPage
-import SelectShowPage
+import subtitleselectionpage
+import selectshowpage
 
 def popupmsg(title, msg):
     popup = tk.Tk()
@@ -33,12 +33,12 @@ class TkinterTestApp(tk.Tk):
         
         self.frames = {}
         
-        for F in (SelectShowPage.SelectShowPage, SubtitleSelectionPage.SubtitleSelectionPage):
+        for F in (selectshowpage.SelectShowPage, subtitleselectionpage.SubtitleSelectionPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         
-        self.show_frame(SelectShowPage.SelectShowPage)
+        self.show_frame(selectshowpage.SelectShowPage)
         
     def show_frame(self, content):
         frame = self.frames[content]
