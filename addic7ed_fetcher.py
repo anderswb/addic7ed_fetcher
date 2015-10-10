@@ -5,17 +5,13 @@ from fnmatch import fnmatch
 
 from fetchandparse import fetchAndParse
 
-LARGE_FONT= ("Verdana", 12)
-NORM_FONT= ("Verdana", 10)
-SMALL_FONT= ("Verdana", 8)
-
 def popupmsg(title, msg):
     popup = tk.Tk()
     popup.wm_title(title)
-    label = ttk.Label(popup, text=msg, font=NORM_FONT)
+    label = ttk.Label(popup, text=msg)
     label.pack(side="top", fill="x", pady=10, padx=10)
     B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-    B1.pack()
+    B1.pack(pady=5)
     popup.mainloop()
 
 class TkinterTestApp(tk.Tk):
