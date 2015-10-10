@@ -122,7 +122,7 @@ class SubtitleSelectionPage(tk.Frame):
             SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))
 
 
-        
-app = TkinterTestApp()
-app.geometry("1000x500")
-app.mainloop()
+if __name__=="__main__":
+    app = TkinterTestApp()
+    app.geometry("1000x500")
+    app.mainloop()
