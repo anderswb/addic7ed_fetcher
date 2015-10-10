@@ -14,6 +14,10 @@ class SubtitleSelectionPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        self.trees = {}
+        self.dataset = {}
+
         SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
 
         button1 = ttk.Button(self, text="Go to page one",
@@ -21,7 +25,7 @@ class SubtitleSelectionPage(tk.Frame):
 
         SubtitleSelectionPage.notebook = ttk.Notebook(self)
 
-        ## Setup the checkboxes
+        # Setup the checkboxes
 
         self.hivar = tk.StringVar(value='off')
         self.hdvar = tk.StringVar(value='off')
@@ -32,7 +36,7 @@ class SubtitleSelectionPage(tk.Frame):
         self.check_hd = ttk.Checkbutton(self, text="HD", variable=self.hdvar, command=self.hdchanged,
                                         onvalue='on', offvalue='off')
         self.check_cor = ttk.Checkbutton(self, text="Corrected", variable=self.corvar, command=self.corchanged,
-                                        onvalue='on', offvalue='off')
+                                         onvalue='on', offvalue='off')
 
         self.hdvar.set(value='dontcare')
         self.check_hd.state(['alternate'])
@@ -46,13 +50,13 @@ class SubtitleSelectionPage(tk.Frame):
         self.check_cor.state(['alternate'])
         self.last_cor_state = 'dontcare'
 
-        ## Setup the dropdown menu
+        # Setup the dropdown menu
 
         dropdownvar = tk.StringVar(self)
-        dropdownvar.set("one") # default value
+        dropdownvar.set("one")  # default value
         dropdown = ttk.OptionMenu(self, dropdownvar, "one", "two", "three")
 
-        ## Add to the grid
+        # Add to the grid
         SubtitleSelectionPage.label1.grid(row=0, column=0, columnspan=4)
         SubtitleSelectionPage.notebook.grid(row=1, column=0, columnspan=4, sticky='nsew')
 
@@ -69,7 +73,6 @@ class SubtitleSelectionPage(tk.Frame):
         tk.Grid.grid_columnconfigure(self, 3, weight=1)
         tk.Grid.grid_rowconfigure(self, 1, weight=1)
 
-
     def updatedisplay(self):
         SubtitleSelectionPage.label1.config(text=selectshowpage.SelectShowPage.selectedshow[1])
         seasons = FetchAndParse.getseasons(selectshowpage.SelectShowPage.selectedshow[0])
@@ -79,10 +82,8 @@ class SubtitleSelectionPage(tk.Frame):
         for tab in SubtitleSelectionPage.notebook.tabs():
             SubtitleSelectionPage.notebook.forget(tab)
 
-        self.trees = {}
-        self.dataset = {}
         for eachseason in seasons:
-            frame = ttk.Frame(SubtitleSelectionPage.notebook) # use the notebook frame
+            frame = ttk.Frame(SubtitleSelectionPage.notebook)  # use the notebook frame
             SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))
 
             self.trees[eachseason] = ttk.Treeview(frame, columns=columns, show='headings')
@@ -94,7 +95,8 @@ class SubtitleSelectionPage(tk.Frame):
                 self.trees[eachseason].heading(column, text=column.title())
                 self.trees[eachseason].column(column, width=Font().measure(column.title()))
 
-            self.dataset[eachseason] = FetchAndParse.getsubtitlelist(selectshowpage.SelectShowPage.selectedshow[0], eachseason)
+            self.dataset[eachseason] = FetchAndParse.getsubtitlelist(selectshowpage.SelectShowPage.selectedshow[0],
+                                                                     eachseason)
             for episodesub in self.dataset[eachseason]:
                 data = []
                 for label in SubtitleSelectionPage.dataset_labels:

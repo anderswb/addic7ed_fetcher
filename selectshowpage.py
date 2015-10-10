@@ -25,7 +25,8 @@ class SelectShowPage(tk.Frame):
         selection = self.listbox1.curselection()
         if len(selection) > 0:
             selectedshowtitle = self.listbox1.get(selection[0])
-            SelectShowPage.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle][0]
+            SelectShowPage.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if
+                                           v[1] == selectedshowtitle][0]
             controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
             popupmsg(controller, "Error", "Please make a selection!")
@@ -59,4 +60,3 @@ class SelectShowPage(tk.Frame):
 
         tk.Grid.grid_columnconfigure(self, 0, weight=1)
         tk.Grid.grid_rowconfigure(self, 2, weight=1)
-

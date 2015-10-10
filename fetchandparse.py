@@ -98,8 +98,8 @@ class FetchAndParse:
 
 
 if __name__ == "__main__":
-    shows = FetchAndParse.getshows()
-    print('Found {} shows'.format(len(shows)))
+    fetchedshows = FetchAndParse.getshows()
+    print('Found {} shows'.format(len(fetchedshows)))
 
     trueblood_seasons = FetchAndParse.getseasons(366)
     print("Found {} seasons in the True Blood show:".format(len(trueblood_seasons)))
@@ -107,5 +107,3 @@ if __name__ == "__main__":
 
     sublist = FetchAndParse.getsubtitlelist(366, 1)
     print('Found {} subtitles in season 1 of True Blood'.format(len(sublist)))
-
-
