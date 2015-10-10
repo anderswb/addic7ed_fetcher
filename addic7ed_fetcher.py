@@ -57,13 +57,13 @@ class SelectShowPage(tk.Frame):
             if fnmatch(show[1].lower(), searchterm.lower()):
                 self.listbox1.insert(0, show[1])
 
-    def nextpage(self, controller, parent):
+    def nextpage(self, controller):
         selectedshowtitle = self.listbox1.get((self.listbox1.curselection()[0]))
-        parent.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle]
+        selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle]
+        SubtitleSelectionPage.updatedisplay(self,selectedshow)
         controller.show_frame(SubtitleSelectionPage)
 
     def __init__(self, parent, controller):
-        parent.selectedshow = (0, "Unknown")
         tk.Frame.__init__(self, parent)
         label1 = ttk.Label(self, text="Select a show:")
 
@@ -80,7 +80,7 @@ class SelectShowPage(tk.Frame):
         self.updatelist('*')
 
         button1 = ttk.Button(self, text="Ok...",
-                             command=lambda: self.nextpage(controller, parent))
+                             command=lambda: self.nextpage(controller))
 
         label1.grid(row=0)
         searchentry.grid(row=1, sticky='ew', columnspan=2)
@@ -93,15 +93,22 @@ class SelectShowPage(tk.Frame):
 
 
 class SubtitleSelectionPage(tk.Frame):
+    test = None
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text=parent.selectedshow[1])
-        label.pack(pady=10, padx=10)
+        self.label1 = ttk.Label(self, text="Unknown show")
+        self.label1.pack(pady=10, padx=10)
+        SubtitleSelectionPage.test = "asd"
 
         button1 = ttk.Button(self, text="Go to page one",
                              command=lambda: controller.show_frame(SelectShowPage))
         button1.pack()
+
+    def updatedisplay(self, selectedshow):
+        print(SubtitleSelectionPage.test)
+        #self.label1.config(text=selectedshow[1])
+
 
         
 app = TkinterTestApp()
