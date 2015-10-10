@@ -38,7 +38,7 @@ class TkinterTestApp(tk.Tk):
         
         self.frames = {}
         
-        for F in (SelectShowPage, PageTwo):
+        for F in (SelectShowPage, SubtitleSelectionPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -57,13 +57,19 @@ class SelectShowPage(tk.Frame):
             if fnmatch(show[1].lower(), searchterm.lower()):
                 self.listbox1.insert(0, show[1])
 
+    def nextpage(self, controller, parent):
+        selectedshowtitle = self.listbox1.get((self.listbox1.curselection()[0]))
+        parent.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if v[1] == selectedshowtitle]
+        controller.show_frame(SubtitleSelectionPage)
+
     def __init__(self, parent, controller):
+        parent.selectedshow = (0, "Unknown")
         tk.Frame.__init__(self, parent)
         label1 = ttk.Label(self, text="Select a show:")
 
         searchentry = ttk.Entry(self)
         searchentry.insert(0, '*')
-        searchentry.bind("<Return>",(lambda event: SelectShowPage.updatelist(self, searchentry.get())))
+        searchentry.bind("<Return>",(lambda event: self.updatelist(searchentry.get())))
 
         label2 = ttk.Label(self, text="Search:")
         self.shows = fetchAndParse.getshows(self)
@@ -71,12 +77,10 @@ class SelectShowPage(tk.Frame):
         scrollbar = tk.Scrollbar(self, orient="vertical")
         self.listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.listbox1.yview)
+        self.updatelist('*')
 
-        for show in self.shows:
-            self.listbox1.insert(0, show[1])
-
-        button1 = ttk.Button(self, text="Go to page two",
-                             command=lambda: controller.show_frame(PageTwo))
+        button1 = ttk.Button(self, text="Ok...",
+                             command=lambda: self.nextpage(controller, parent))
 
         label1.grid(row=0)
         searchentry.grid(row=1, sticky='ew', columnspan=2)
@@ -88,11 +92,11 @@ class SelectShowPage(tk.Frame):
         tk.Grid.grid_rowconfigure(self, 2, weight=1)
 
 
-class PageTwo(tk.Frame):
+class SubtitleSelectionPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Page Two!!!", font=LARGE_FONT)
+        label = ttk.Label(self, text=parent.selectedshow[1])
         label.pack(pady=10, padx=10)
 
         button1 = ttk.Button(self, text="Go to page one",
