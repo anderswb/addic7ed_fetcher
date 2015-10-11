@@ -91,6 +91,8 @@ class SubtitleSelectionPage(tk.Frame):
         for tab in SubtitleSelectionPage.notebook.tabs():
             SubtitleSelectionPage.notebook.forget(tab)
 
+        ## TODO: forget treeviews as well
+
         # populate the dataset
         self.dataset = {}  # clear out old data
         for eachseason in seasons:
@@ -100,6 +102,12 @@ class SubtitleSelectionPage(tk.Frame):
             # Create a treeview for the current season, and add it to the tab
             self.trees[eachseason] = ttk.Treeview(frame, columns=columns, show='headings')
             self.trees[eachseason].grid(row=0, column=0, sticky='nsew')
+
+            # Create y scrollbar
+            ysb = ttk.Scrollbar(frame, orient='vertical', command=self.trees[eachseason].yview)
+            self.trees[eachseason].configure(yscroll=ysb.set)
+            ysb.grid(row=0, column=1, sticky='ns')
+
             tk.Grid.grid_rowconfigure(frame, 0, weight=1)
             tk.Grid.grid_columnconfigure(frame, 0, weight=1)
 
