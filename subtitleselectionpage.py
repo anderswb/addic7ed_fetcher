@@ -1,11 +1,11 @@
-import http.client
 import tkinter as tk
 from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
-import urllib.request
+import re
 from downloadsession import session
+from tkinter import messagebox
 
 __author__ = 'Anders'
 
@@ -204,11 +204,24 @@ class SubtitleSelectionPage(tk.Frame):
                 selected_dataset = self.displayedsubs[season][selection_index]
                 url = 'http://www.addic7ed.com' + selected_dataset['dl link']
 
-                filename = "S{:02}E{:02}.srt".format(int(season), int(selected_dataset['episode']))
-                content = session.get(url).content
+                request = session.get(url)
+                content = request.content  # get the file content
 
-                if content[:9] == '<!DOCTYPE':
-                    raise ValueError('Daily Download count exceeded.')
+                if re.findall('download limit', content.decode('utf-8')):
+                    messagebox.showerror('Download limit', 'Daily download count exceeded.')
+                    return
+                else:
+                    # get the filename from the header
+                    headers = request.headers
+                    print(headers)
+                    if 'Content-Disposition' in headers:  # check if a filename was included
+                        content_disp = headers['Content-Disposition']
+                        filename = re.findall(r'filename="(.+)"', content_disp)[0]
 
-                with open(filename, 'wb') as fp:
-                    fp.write(content)
+                        # Save the file content
+                        with open(filename, 'wb') as fp:
+                            fp.write(content)
+                    else:
+                        messagebox.showerror('Download error', 'Can\'t download subtitle S{:02}E{:02}, '
+                                                               'it is probably not complete.'
+                                             .format(int(season), int(selected_dataset['episode'])))
