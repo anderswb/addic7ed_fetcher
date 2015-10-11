@@ -3,7 +3,7 @@ import subtitleselectionpage
 import selectshowpage
 from guitools import center
 from tkinter import messagebox
-import settingdialog
+import logindialog
 
 
 class TkinterTestApp(tk.Tk):
@@ -18,7 +18,7 @@ class TkinterTestApp(tk.Tk):
 
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Settings...", command=lambda: settingdialog.SettingsDialog(self))
+        filemenu.add_command(label="Login...", command=lambda: logindialog.LoginDialog(self))
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)

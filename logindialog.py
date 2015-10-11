@@ -1,11 +1,13 @@
 import tkinter as tk
 import dialog
 from tkinter import ttk
+import login
+from tkinter import messagebox
 
 __author__ = 'Anders'
 
 
-class SettingsDialog(dialog.Dialog):
+class LoginDialog(dialog.Dialog):
 
     def body(self, master):
 
@@ -20,6 +22,9 @@ class SettingsDialog(dialog.Dialog):
         return self.e1 # initial focus
 
     def apply(self):
-        first = int(self.e1.get())
-        second = int(self.e2.get())
-        print(first, second)  # or something
+        user = self.e1.get()
+        pwd = self.e2.get()
+        try:
+            login.login(user, pwd)
+        except TypeError as e:
+            messagebox.showerror('Login error', e)
