@@ -17,6 +17,7 @@ class SubtitleSelectionPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         self.trees = {}
+        self.displayedsubs = {}
         self.dataset = {}
 
         SubtitleSelectionPage.label1 = ttk.Label(self, text="Unknown show")
@@ -24,7 +25,7 @@ class SubtitleSelectionPage(tk.Frame):
         button_back = ttk.Button(self, text="Back",
                                  command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
         button_ok = ttk.Button(self, text="OK",
-                               command=lambda: messagebox.showinfo("Note", "Not implemented yet!"))
+                               command=lambda: self.downloadsubs())
 
         SubtitleSelectionPage.notebook = ttk.Notebook(self)
 
@@ -156,10 +157,13 @@ class SubtitleSelectionPage(tk.Frame):
         self.filterchanged()
 
     def filterchanged(self):
+        self.displayedsubs = {}
         for (season, dataset) in self.dataset.items():
 
             # clear the season tree
             self.trees[season].delete(*self.trees[season].get_children())
+
+            self.displayedsubs[season] = []
 
             for episodesub in dataset:
 
@@ -187,3 +191,13 @@ class SubtitleSelectionPage(tk.Frame):
 
                     # add the list to the tree
                     self.trees[season].insert('', 'end', values=data)
+
+                    # add the dataset to the list of displayed subs, making it easier to download them later on
+                    self.displayedsubs[season].append(episodesub)
+
+    def downloadsubs(self):
+        for (season, seasontree) in self.trees.items():
+            for selection in seasontree.selection():
+                selection_index = seasontree.index(selection)
+                print(self.displayedsubs[season][selection_index])
+
