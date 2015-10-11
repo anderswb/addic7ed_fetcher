@@ -53,10 +53,12 @@ class SelectShowPage(tk.Frame):
 
         label1.grid(row=0)
         searchentry.grid(row=1, sticky='ew', columnspan=2)
+
         self.listbox1.grid(row=2, column=0, sticky='nsew')
         scrollbar.grid(row=2, column=1, sticky='nse')
-        button_quit.grid(row=3, sticky='w')
-        button_ok.grid(row=3, sticky='e')
+
+        button_quit.grid(row=3, sticky='w', padx=10, pady=10)
+        button_ok.grid(row=3, sticky='e', columnspan=2, padx=10, pady=10)
 
         tk.Grid.grid_columnconfigure(self, 0, weight=1)
         tk.Grid.grid_rowconfigure(self, 2, weight=1)

@@ -34,11 +34,12 @@ class SubtitleSelectionPage(tk.Frame):
         self.hdvar = tk.StringVar(value='off')
         self.corvar = tk.StringVar(value='off')
 
-        self.check_hi = ttk.Checkbutton(self, text="HI", variable=self.hivar, command=self.hichanged,
+        nestedframe = tk.Frame(self)
+        self.check_hi = ttk.Checkbutton(nestedframe, text="HI", variable=self.hivar, command=self.hichanged,
                                         onvalue='on', offvalue='off')
-        self.check_hd = ttk.Checkbutton(self, text="HD", variable=self.hdvar, command=self.hdchanged,
+        self.check_hd = ttk.Checkbutton(nestedframe, text="HD", variable=self.hdvar, command=self.hdchanged,
                                         onvalue='on', offvalue='off')
-        self.check_cor = ttk.Checkbutton(self, text="Corrected", variable=self.corvar, command=self.corchanged,
+        self.check_cor = ttk.Checkbutton(nestedframe, text="Corrected", variable=self.corvar, command=self.corchanged,
                                          onvalue='on', offvalue='off')
 
         self.hdvar.set(value='dontcare')
@@ -57,25 +58,26 @@ class SubtitleSelectionPage(tk.Frame):
 
         self.dropdownvar = tk.StringVar(self)
         self.dropdownvar.set("All languages")  # default value
-        self.dropdown = ttk.OptionMenu(self, self.dropdownvar, "All languages")
+        self.dropdown = ttk.OptionMenu(nestedframe, self.dropdownvar, "All languages")
 
         # Add to the grid
-        SubtitleSelectionPage.label1.grid(row=0, column=0, columnspan=4)
-        SubtitleSelectionPage.notebook.grid(row=1, column=0, columnspan=4, sticky='nsew')
+        SubtitleSelectionPage.label1.grid(row=0, column=0, columnspan=1)
 
-        self.check_hi.grid(row=2, column=0)
-        self.check_hd.grid(row=2, column=1)
-        self.check_cor.grid(row=2, column=2)
-        self.dropdown.grid(row=2, column=3)
+        nestedframe.grid(row=1, column=0, sticky='we')
 
-        button_back.grid(row=3, columnspan=4, sticky='w')
-        button_ok.grid(row=3, columnspan=4, sticky='e')
+        self.check_hi.grid(row=0, column=0, sticky='w', padx=10)
+        self.check_hd.grid(row=0, column=1, sticky='w', padx=10)
+        self.check_cor.grid(row=0, column=2, sticky='w', padx=10)
+        self.dropdown.grid(row=0, column=3, sticky='e', padx=10)
+        tk.Grid.grid_columnconfigure(nestedframe, 3, weight=1)
+
+        SubtitleSelectionPage.notebook.grid(row=2, column=0, columnspan=1, sticky='nsew', padx=5, pady=5)
+
+        button_back.grid(row=3, columnspan=1, sticky='w', padx=5, pady=5)
+        button_ok.grid(row=3, columnspan=1, sticky='e', padx=5, pady=5)
 
         tk.Grid.grid_columnconfigure(self, 0, weight=1)
-        tk.Grid.grid_columnconfigure(self, 1, weight=1)
-        tk.Grid.grid_columnconfigure(self, 2, weight=1)
-        tk.Grid.grid_columnconfigure(self, 3, weight=1)
-        tk.Grid.grid_rowconfigure(self, 1, weight=1)
+        tk.Grid.grid_rowconfigure(self, 2, weight=1)
 
     def updatedisplay(self):
         SubtitleSelectionPage.label1.config(text=selectshowpage.SelectShowPage.selectedshow[1])
