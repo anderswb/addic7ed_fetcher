@@ -3,6 +3,7 @@ import subtitleselectionpage
 import selectshowpage
 from guitools import center
 from tkinter import messagebox
+import settingdialog
 
 
 class TkinterTestApp(tk.Tk):
@@ -17,7 +18,7 @@ class TkinterTestApp(tk.Tk):
 
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Save settings", command=lambda: messagebox.showinfo('Note', 'Not supported just yet!'))
+        filemenu.add_command(label="Settings...", command=lambda: settingdialog.SettingsDialog(self))
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
@@ -40,6 +41,7 @@ class TkinterTestApp(tk.Tk):
         frame = self.frames[content]
         frame.updatedisplay()
         frame.tkraise()
+
 
 if __name__ == "__main__":
     app = TkinterTestApp()
