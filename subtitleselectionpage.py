@@ -123,40 +123,32 @@ class SubtitleSelectionPage(tk.Frame):
                              self.dropdownchanged(value))
 
     def hdchanged(self):
-        if self.last_hd_state == 'off':
-            self.hdvar.set(value='dontcare')
-            self.check_hd.state(['alternate'])
-        elif self.last_hd_state == 'dontcare':
-            self.hdvar.set(value='on')
-        elif self.last_hd_state == 'on':
-            self.hdvar.set(value='off')
-
-        self.last_hd_state = self.hdvar.get()
+        self.last_hd_state = self.checkboxchange(self.last_hd_state, self.hdvar, self.check_hd)
         self.filterchanged()
 
     def hichanged(self):
-        if self.last_hi_state == 'off':
-            self.hivar.set(value='dontcare')
-            self.check_hi.state(['alternate'])
-        elif self.last_hi_state == 'dontcare':
-            self.hivar.set(value='on')
-        elif self.last_hi_state == 'on':
-            self.hivar.set(value='off')
-
-        self.last_hi_state = self.hivar.get()
+        self.last_hi_state = self.checkboxchange(self.last_hi_state, self.hivar, self.check_hi)
         self.filterchanged()
 
     def corchanged(self):
-        if self.last_cor_state == 'off':
-            self.corvar.set(value='dontcare')
-            self.check_cor.state(['alternate'])
-        elif self.last_cor_state == 'dontcare':
-            self.corvar.set(value='on')
-        elif self.last_cor_state == 'on':
-            self.corvar.set(value='off')
-
-        self.last_cor_state = self.corvar.get()
+        self.last_cor_state = self.checkboxchange(self.last_cor_state, self.corvar, self.check_cor)
         self.filterchanged()
+
+    @staticmethod
+    def checkboxchange(last_state, variable_ref, checkbox_ref):
+        new_state = last_state  # make sure it's set to something
+        if last_state == 'off':
+            variable_ref.set(value='dontcare')
+            checkbox_ref.state(['alternate'])
+            new_state = 'dontcare'
+        elif last_state == 'dontcare':
+            variable_ref.set(value='on')
+            new_state = 'on'
+        elif last_state == 'on':
+            variable_ref.set(value='off')
+            new_state = 'off'
+
+        return new_state
 
     def dropdownchanged(self, language):
         self.dropdownvar.set(language)
@@ -170,36 +162,22 @@ class SubtitleSelectionPage(tk.Frame):
 
             for episodesub in dataset:
 
-                languageshow = False
-                if self.dropdownvar.get() == "All languages":
-                    languageshow = True
-                elif self.dropdownvar.get() == episodesub['language']:
-                    languageshow = True
+                languageshow = self.dropdownvar.get() == "All languages" or \
+                               self.dropdownvar.get() == episodesub['language']
 
-                hdshow = False
-                if self.hdvar.get() == 'dontcare':
-                    hdshow = True
-                elif episodesub['hd'] == True and self.hdvar.get() == 'on':
-                    hdshow = True
-                elif episodesub['hd'] == False and self.hdvar.get() == 'off':
-                    hdshow = True
+                hdshow = self.hdvar.get() == 'dontcare' or \
+                    (episodesub['hd'] == True and self.hdvar.get() == 'on') or \
+                    (episodesub['hd'] == False and self.hdvar.get() == 'off')
 
-                hishow = False
-                if self.hivar.get() == 'dontcare':
-                    hishow = True
-                elif episodesub['hi'] == True and self.hivar.get() == 'on':
-                    hishow = True
-                elif episodesub['hi'] == False and self.hivar.get() == 'off':
-                    hishow = True
+                hishow = self.hivar.get() == 'dontcare' or \
+                    (episodesub['hi'] == True and self.hivar.get() == 'on') or \
+                    (episodesub['hi'] == False and self.hivar.get() == 'off')
 
-                corshow = False
-                if self.corvar.get() == 'dontcare':
-                    corshow = True
-                elif episodesub['corrected'] == True and self.corvar.get() == 'on':
-                    corshow = True
-                elif episodesub['corrected'] == False and self.corvar.get() == 'off':
-                    corshow = True
+                corshow = self.corvar.get() == 'dontcare' or \
+                    (episodesub['corrected'] == True and self.corvar.get() == 'on') or \
+                    (episodesub['corrected'] == False and self.corvar.get() == 'off')
 
+                # if all of the filter conditions are true
                 if hdshow and hishow and corshow and languageshow:
                     # convert the dict to a list
                     data = []
