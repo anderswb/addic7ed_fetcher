@@ -24,7 +24,8 @@ class TkinterTestApp(tk.Tk):
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
         helpmenu = tk.Menu(menubar, tearoff=0)
-        helpmenu.add_command(label="About", command=lambda: messagebox.showinfo("About", "Addic7ed.com fetcher\nBy Anders Brandt"))
+        helpmenu.add_command(label="About", command=lambda: messagebox.showinfo("About", "Addic7ed.com fetcher\n"
+                                                                                         "By Anders Brandt"))
         menubar.add_cascade(label="Help", menu=helpmenu)
 
         tk.Tk.config(self, menu=menubar)

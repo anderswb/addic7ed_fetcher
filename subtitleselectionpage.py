@@ -5,6 +5,7 @@ from tkinter.font import Font
 import selectshowpage
 from downloadsession import session
 from tkinter import messagebox
+from re import findall
 
 __author__ = 'Anders'
 
@@ -214,7 +215,7 @@ class SubtitleSelectionPage(tk.Frame):
                     headers = request.headers
                     if 'Content-Disposition' in headers:  # check if a filename was included
                         content_disp = headers['Content-Disposition']
-                        filename = re.findall(r'filename="(.+)"', content_disp)[0]
+                        filename = findall(r'filename="(.+)"', content_disp)[0]
 
                         # Save the file content
                         with open(filename, 'wb') as fp:
