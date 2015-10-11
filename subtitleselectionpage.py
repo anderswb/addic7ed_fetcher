@@ -116,11 +116,11 @@ class SubtitleSelectionPage(tk.Frame):
         menu.delete(0, "end")
         menu.add_command(label="All languages",
                          command=lambda value="All languages":
-                         self.dropdownvar.set(value))
+                         self.dropdownchanged(value))
         for language in languages:
             menu.add_command(label=language,
                              command=lambda value=language:
-                             self.dropdownvar.set(value))
+                             self.dropdownchanged(value))
 
     def hdchanged(self):
         if self.last_hd_state == 'off':
@@ -158,6 +158,10 @@ class SubtitleSelectionPage(tk.Frame):
         self.last_cor_state = self.corvar.get()
         self.filterchanged()
 
+    def dropdownchanged(self, language):
+        self.dropdownvar.set(language)
+        self.filterchanged()
+
     def filterchanged(self):
         for (season, dataset) in self.dataset.items():
 
@@ -165,6 +169,12 @@ class SubtitleSelectionPage(tk.Frame):
             self.trees[season].delete(*self.trees[season].get_children())
 
             for episodesub in dataset:
+
+                languageshow = False
+                if self.dropdownvar.get() == "All languages":
+                    languageshow = True
+                elif self.dropdownvar.get() == episodesub['language']:
+                    languageshow = True
 
                 hdshow = False
                 if self.hdvar.get() == 'dontcare':
@@ -190,7 +200,7 @@ class SubtitleSelectionPage(tk.Frame):
                 elif episodesub['corrected'] == False and self.corvar.get() == 'off':
                     corshow = True
 
-                if hdshow and hishow and corshow:
+                if hdshow and hishow and corshow and languageshow:
                     # convert the dict to a list
                     data = []
                     for label in SubtitleSelectionPage.dataset_labels:
