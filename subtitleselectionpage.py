@@ -3,7 +3,6 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
-import re
 from downloadsession import session
 from tkinter import messagebox
 
@@ -207,13 +206,12 @@ class SubtitleSelectionPage(tk.Frame):
                 request = session.get(url)
                 content = request.content  # get the file content
 
-                if re.findall('download limit', content.decode('utf-8')):
+                if content[0:8] == b'<!DOCTYP':
                     messagebox.showerror('Download limit', 'Daily download count exceeded.')
                     return
                 else:
                     # get the filename from the header
                     headers = request.headers
-                    print(headers)
                     if 'Content-Disposition' in headers:  # check if a filename was included
                         content_disp = headers['Content-Disposition']
                         filename = re.findall(r'filename="(.+)"', content_disp)[0]
