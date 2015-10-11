@@ -3,7 +3,7 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
-from tkinter import messagebox
+import urllib.request
 
 __author__ = 'Anders'
 
@@ -199,5 +199,12 @@ class SubtitleSelectionPage(tk.Frame):
         for (season, seasontree) in self.trees.items():
             for selection in seasontree.selection():
                 selection_index = seasontree.index(selection)
-                print(self.displayedsubs[season][selection_index])
+                selected_dataset = self.displayedsubs[season][selection_index]
+                url = 'http://www.addic7ed.com' + selected_dataset['dl link']
+                print(url)
+                filename = "S{:02}E{:02}.srt".format(int(season), int(selected_dataset['episode']))
 
+                # Download the file from `url` and save it locally under `file_name`:
+                with urllib.request.urlopen(url) as response, open(filename, 'wb') as out_file:
+                    data = response.read() # a `bytes` object
+                    out_file.write(data)
