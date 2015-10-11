@@ -4,12 +4,13 @@ import selectshowpage
 from guitools import center
 from tkinter import messagebox
 import logindialog
+import login
 
 
 class TkinterTestApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        tk.Tk.wm_title(self, "Addic7ed Fetcher")
+        self.updatetitle()
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -18,7 +19,7 @@ class TkinterTestApp(tk.Tk):
 
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Login...", command=lambda: logindialog.LoginDialog(self))
+        filemenu.add_command(label="Login...", command=lambda: self.showlogindialog())
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
@@ -42,6 +43,16 @@ class TkinterTestApp(tk.Tk):
         frame.updatedisplay()
         frame.tkraise()
 
+    def showlogindialog(self):
+        logindialog.LoginDialog(self)
+        self.updatetitle()
+
+    def updatetitle(self):
+        user = login.get_current_user()
+        if user is not None:
+            tk.Tk.wm_title(self, "Addic7ed Fetcher - logged in as: {}".format(user))
+        else:
+            tk.Tk.wm_title(self, "Addic7ed Fetcher - not logged in")
 
 if __name__ == "__main__":
     app = TkinterTestApp()
