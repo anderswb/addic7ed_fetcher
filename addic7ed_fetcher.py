@@ -1,7 +1,7 @@
 import tkinter as tk
 import subtitleselectionpage
 import selectshowpage
-from popupmessages import popupmsg
+from popupmessages import popupmsg, center
 
 
 class TkinterTestApp(tk.Tk):
@@ -40,4 +40,5 @@ class TkinterTestApp(tk.Tk):
 if __name__ == "__main__":
     app = TkinterTestApp()
     app.geometry("1000x500")
+    center(app)
     app.mainloop()
