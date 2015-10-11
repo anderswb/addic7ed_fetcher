@@ -1,7 +1,7 @@
 import tkinter as tk
 import subtitleselectionpage
 import selectshowpage
-from popupmessages import popupmsg, center
+from popupmessages import center
 from tkinter import messagebox
 
 

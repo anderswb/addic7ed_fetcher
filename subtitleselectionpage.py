@@ -3,7 +3,7 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
-from popupmessages import popupmsg
+from tkinter import messagebox
 
 __author__ = 'Anders'
 
@@ -24,7 +24,7 @@ class SubtitleSelectionPage(tk.Frame):
         button_back = ttk.Button(self, text="Back",
                                  command=lambda: controller.show_frame(selectshowpage.SelectShowPage))
         button_ok = ttk.Button(self, text="OK",
-                               command=lambda: popupmsg(controller, "Note", "Not implemented yet!"))
+                               command=lambda: messagebox.showinfo("Note", "Not implemented yet!"))
 
         SubtitleSelectionPage.notebook = ttk.Notebook(self)
 

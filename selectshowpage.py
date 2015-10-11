@@ -3,7 +3,7 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 import subtitleselectionpage
 from fnmatch import fnmatch
-from popupmessages import popupmsg
+from tkinter import messagebox
 
 __author__ = 'Anders'
 
@@ -29,7 +29,7 @@ class SelectShowPage(tk.Frame):
                                            v[1] == selectedshowtitle][0]
             controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
         else:
-            popupmsg(controller, "Error", "Please make a selection!")
+            messagebox.showerror("Error", "Please make a selection!")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
