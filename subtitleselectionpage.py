@@ -84,31 +84,32 @@ class SubtitleSelectionPage(tk.Frame):
         seasons = FetchAndParse.getseasons(selectshowpage.SelectShowPage.selectedshow[0])
         columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
 
-        # make sure there's no tabs displayed
+        # remove all tabs
         for tab in SubtitleSelectionPage.notebook.tabs():
             SubtitleSelectionPage.notebook.forget(tab)
 
-        # populate everything
+        # populate the dataset
+        self.dataset = {}  # clear out old data
         for eachseason in seasons:
             frame = ttk.Frame(SubtitleSelectionPage.notebook)  # use the notebook frame
-            SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))
+            SubtitleSelectionPage.notebook.add(frame, text="S{:02}".format(eachseason))  # add new tab
 
+            # Create a treeview for the current season, and add it to the tab
             self.trees[eachseason] = ttk.Treeview(frame, columns=columns, show='headings')
             self.trees[eachseason].grid(row=0, column=0, sticky='nsew')
             tk.Grid.grid_rowconfigure(frame, 0, weight=1)
             tk.Grid.grid_columnconfigure(frame, 0, weight=1)
 
+            # Put in the headings on the new treeview
             for column in columns:
                 self.trees[eachseason].heading(column, text=column.title())
                 self.trees[eachseason].column(column, width=Font().measure(column.title()))
 
+            # Fetch the dataset for the current season
             self.dataset[eachseason] = FetchAndParse.getsubtitlelist(selectshowpage.SelectShowPage.selectedshow[0],
                                                                      eachseason)
-            for episodesub in self.dataset[eachseason]:
-                data = []
-                for label in SubtitleSelectionPage.dataset_labels:
-                    data.append(episodesub[label])
-                self.trees[eachseason].insert('', 'end', values=data)
+
+        self.filterchanged()  # update the tree view with the subtitles stored in self.dataset
 
         # Populate languages filter dropdown menu
         languages = FetchAndParse.getlanguages(self.dataset)
