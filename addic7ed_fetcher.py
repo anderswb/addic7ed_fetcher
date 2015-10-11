@@ -2,6 +2,7 @@ import tkinter as tk
 import subtitleselectionpage
 import selectshowpage
 from popupmessages import popupmsg, center
+from tkinter import messagebox
 
 
 class TkinterTestApp(tk.Tk):
@@ -16,10 +17,13 @@ class TkinterTestApp(tk.Tk):
 
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Save settings", command=lambda: popupmsg(self, 'Note', 'Not supported just yet!'))
+        filemenu.add_command(label="Save settings", command=lambda: messagebox.showinfo('Note', 'Not supported just yet!'))
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="About", command=lambda: messagebox.showinfo("About", "Addic7ed.com fetcher\nBy Anders Brandt"))
+        menubar.add_cascade(label="Help", menu=helpmenu)
 
         tk.Tk.config(self, menu=menubar)
         
