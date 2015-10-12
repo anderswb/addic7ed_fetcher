@@ -3,9 +3,12 @@ from tkinter import ttk
 from fetchandparse import FetchAndParse
 from tkinter.font import Font
 import selectshowpage
+from downloaddialog import DownloadDialog
 from downloadsession import session
 from tkinter import messagebox
 from re import findall
+from threading import Thread
+import time
 
 __author__ = 'Anders'
 
@@ -17,7 +20,7 @@ class SubtitleSelectionPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-
+        self.container = controller
         self.trees = {}
         self.displayedsubs = {}
         self.dataset = {}
@@ -120,6 +123,9 @@ class SubtitleSelectionPage(tk.Frame):
             self.dataset[eachseason] = FetchAndParse.getsubtitlelist(selectshowpage.SelectShowPage.selectedshow[0],
                                                                      eachseason)
 
+            self.trees[eachseason].tag_configure('white', background='white')
+            self.trees[eachseason].tag_configure('gray', background='lightgray')
+
         self.filterchanged()  # update the tree view with the subtitles stored in self.dataset
 
         # Populate languages filter dropdown menu
@@ -175,6 +181,8 @@ class SubtitleSelectionPage(tk.Frame):
 
             self.displayedsubs[season] = []
 
+            colortag = 'white'
+            last_episode = None
             for episodesub in dataset:
 
                 languageshow = self.dropdownvar.get() == "All languages" or \
@@ -199,36 +207,61 @@ class SubtitleSelectionPage(tk.Frame):
                     for label in SubtitleSelectionPage.dataset_labels:
                         data.append(episodesub[label])
 
+                    # Find the colortag for the current row
+                    if episodesub['episode'] != last_episode and last_episode is not None:
+                        if colortag == 'white':
+                            colortag = 'gray'
+                        else:
+                            colortag = 'white'
+                    last_episode = episodesub['episode']
+
                     # add the list to the tree
-                    self.trees[season].insert('', 'end', values=data)
+                    self.trees[season].insert('', 'end', values=data, tags = (colortag,))
 
                     # add the dataset to the list of displayed subs, making it easier to download them later on
                     self.displayedsubs[season].append(episodesub)
 
     def downloadsubs(self):
+        showstodownload = []
+        urllist = []
         for (season, seasontree) in self.trees.items():
             for selection in seasontree.selection():
                 selection_index = seasontree.index(selection)
                 selected_dataset = self.displayedsubs[season][selection_index]
-                url = 'http://www.addic7ed.com' + selected_dataset['dl link']
+                showstodownload.append(selected_dataset)
+                urllist.append('http://www.addic7ed.com' + selected_dataset['dl link'])
 
-                request = session.get(url)
-                content = request.content  # get the file content
+        thread1 = Thread(target=self.downloadandsave, args=(showstodownload, ))
+        thread1.start()
+        DownloadDialog(self, showstodownload)
+        thread1.join()
 
-                if content[0:8] == b'<!DOCTYP':
-                    messagebox.showerror('Download limit', 'Daily download count exceeded.')
-                    return
-                else:
-                    # get the filename from the header
-                    headers = request.headers
-                    if 'Content-Disposition' in headers:  # check if a filename was included
-                        content_disp = headers['Content-Disposition']
-                        filename = findall(r'filename="(.+)"', content_disp)[0]
+    def downloadandsave(self, urllist):
+        for idx, url in enumerate(urllist):
+            while DownloadDialog.statustree is None:
+                time.sleep(1)
+            DownloadDialog.updateprogress(idx, 'Downloading')
+            time.sleep(1)
+            DownloadDialog.updateprogress(idx, 'Done')
 
-                        # Save the file content
-                        with open(filename, 'wb') as fp:
-                            fp.write(content)
-                    else:
-                        messagebox.showerror('Download error', 'Can\'t download subtitle S{:02}E{:02}, '
-                                                               'it is probably not complete.'
-                                             .format(int(season), int(selected_dataset['episode'])))
+        # request = session.get(url)
+        # content = request.content  # get the file content
+        #
+        # if content[0:8] == b'<!DOCTYP':
+        #     messagebox.showerror('Download limit', 'Daily download count exceeded.')
+        #     return False
+        # else:
+        #     # get the filename from the header
+        #     headers = request.headers
+        #     if 'Content-Disposition' in headers:  # check if a filename was included
+        #         content_disp = headers['Content-Disposition']
+        #         filename = findall(r'filename="(.+)"', content_disp)[0]
+        #
+        #         # Save the file content
+        #         with open(filename, 'wb') as fp:
+        #             fp.write(content)
+        #         return True
+        #     else:
+        #         messagebox.showerror('Download error', 'Can\'t download subtitle, '
+        #                                                'it is probably not complete.')
+        #         return False
