@@ -1,3 +1,5 @@
+from controller import Controller
+
 import tkinter as tk
 import subtitleselectionpage
 import selectshowpage
@@ -44,19 +46,6 @@ class TkinterTestApp(tk.Tk):
         frame.updatedisplay()
         frame.tkraise()
 
-    def showlogindialog(self):
-        logindialog.LoginDialog(self)
-        self.updatetitle()
-
-    def updatetitle(self):
-        user = login.get_current_user()
-        if user is not None:
-            tk.Tk.wm_title(self, "Addic7ed Fetcher - logged in as: {}".format(user))
-        else:
-            tk.Tk.wm_title(self, "Addic7ed Fetcher - not logged in")
-
-if __name__ == "__main__":
-    app = TkinterTestApp()
-    app.geometry("1000x500")
-    center(app)
-    app.mainloop()
+if __name__ == '__main__':
+    c = Controller()
+    c.run()

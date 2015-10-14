@@ -1,64 +1,52 @@
 import tkinter as tk
 from tkinter import ttk
-from fetchandparse import FetchAndParse
-import subtitleselectionpage
-from fnmatch import fnmatch
-from tkinter import messagebox
 
 __author__ = 'Anders'
 
 
 class SelectShowPage(tk.Frame):
 
-    selectedshow = ()
-
-    def updatelist(self, searchterm):
-        self.listbox1.delete(0, 'end')
-        for show in self.shows:
-            if fnmatch(show[1].lower(), searchterm.lower()):
-                self.listbox1.insert(0, show[1])
+    def updatelist(self):
+        pass
 
     def updatedisplay(self):
         pass
 
-    def nextpage(self, controller):
-        selection = self.listbox1.curselection()
-        if len(selection) > 0:
-            selectedshowtitle = self.listbox1.get(selection[0])
-            SelectShowPage.selectedshow = [self.shows[i] for i, v in enumerate(self.shows) if
-                                           v[1] == selectedshowtitle][0]
-            controller.show_frame(subtitleselectionpage.SubtitleSelectionPage)
-        else:
-            messagebox.showerror("Error", "Please make a selection!")
-
-    def __init__(self, parent, controller):
+    def __init__(self, parent):
         tk.Frame.__init__(self, parent)
         label1 = ttk.Label(self, text="Select a show:")
 
         searchentry = ttk.Entry(self)
         searchentry.insert(0, '*')
-        searchentry.bind("<Return>", (lambda event: self.updatelist(searchentry.get())))
 
-        self.shows = FetchAndParse.getshows()
+        label1.pack(side=tk.TOP)
+        searchentry.pack(side=tk.TOP, fill=tk.X)
 
-        scrollbar = ttk.Scrollbar(self, orient="vertical")
-        self.listbox1 = tk.Listbox(self, width=50, height=20, yscrollcommand=scrollbar.set)
-        scrollbar.config(command=self.listbox1.yview)
-        self.updatelist('*')
+        frame = tk.Frame(self)
+        self.listbox1 = tk.Listbox(frame)
+        ysb = ttk.Scrollbar(frame, orient='vertical', command=self.listbox1.yview)
+        self.listbox1.configure(yscroll=ysb.set)
+        self.listbox1.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        ysb.pack(side=tk.RIGHT, fill=tk.Y)
+        frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        button_quit = ttk.Button(self, text="Exit",
-                                 command=quit)
-        button_ok = ttk.Button(self, text="OK",
-                               command=lambda: self.nextpage(controller))
+        for i in range(1,100):
+            self.listbox1.insert(0, i)
 
-        label1.grid(row=0)
-        searchentry.grid(row=1, sticky='ew', columnspan=2)
+        self.bottompanel = ButtonPanel(self, buttons=('OK', 'Exit'))
+        self.bottompanel.pack(side=tk.BOTTOM, fill=tk.X)
 
-        self.listbox1.grid(row=2, column=0, sticky='nsew')
-        scrollbar.grid(row=2, column=1, sticky='nse')
 
-        button_quit.grid(row=3, sticky='w', padx=10, pady=10)
-        button_ok.grid(row=3, sticky='e', columnspan=2, padx=10, pady=10)
+class ButtonPanel(tk.Frame):
 
-        tk.Grid.grid_columnconfigure(self, 0, weight=1)
-        tk.Grid.grid_rowconfigure(self, 2, weight=1)
+    def __init__(self, master=None, cnf={}, **kw):
+        passed_buttons = []
+        for button in kw.pop('buttons', None):
+            passed_buttons.append(button)
+
+        tk.Frame.__init__(self, master, cnf, **kw)
+
+        self.buttons = []
+        for i, button in enumerate(passed_buttons):
+            self.buttons.append(ttk.Button(self, text=button))
+            self.buttons[i].pack(side=tk.RIGHT, padx=5, pady=5)
