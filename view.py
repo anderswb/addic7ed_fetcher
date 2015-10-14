@@ -14,11 +14,9 @@ class View:
     def __init__(self, parent, master):
         self.master = master
         container = tk.Frame(master)
-        container.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        container.pack(side=tk.TOP, fill=tk.BOTH, expand=1, padx=2, pady=2)
 
         self.menu = Menu(parent, master)
-
-        #self.bottompanel = ButtonPanel(master)
 
         self.frames = {}
         for F in (SelectShowPage, ):
