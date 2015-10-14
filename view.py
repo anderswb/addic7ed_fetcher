@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox
 
 import logindialog
 import login
@@ -41,6 +41,10 @@ class View:
     def showlogindialog(self):
         logindialog.LoginDialog(self)
         self.updatetitle()
+
+    def showaboutdialog(self):
+        messagebox.showinfo("About", "Addic7ed.com fetcher\n"
+                                     "By Anders Brandt")
 
 
 class Menu:

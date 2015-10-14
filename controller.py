@@ -28,8 +28,7 @@ class Controller:
         if item == 'login':
             pass
         elif item == 'about':
-            messagebox.showinfo("About", "Addic7ed.com fetcher\n"
-                                         "By Anders Brandt")
+            self.view.showaboutdialog()
         elif item == 'exit':
             self.quitprogram()
         else:
