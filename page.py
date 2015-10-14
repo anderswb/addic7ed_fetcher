@@ -30,7 +30,7 @@ class ButtonPanel(tk.Frame):
 
         tk.Frame.__init__(self, master, cnf, **kw)
 
-        self.buttons = []
+        self.buttons = {}
         for i, button in enumerate(passed_buttons):
-            self.buttons.append(ttk.Button(self, text=button))
-            self.buttons[i].pack(side=tk.RIGHT, padx=5, pady=2)
+            self.buttons[button] = ttk.Button(self, text=button)
+            self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)

@@ -26,8 +26,5 @@ class SelectShowPage(page.Page):
         ysb.pack(side=tk.RIGHT, fill=tk.Y)
         frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        for i in range(1,100):
-            self.listbox1.insert(0, i)
-
-        self.bottompanel = page.ButtonPanel(self, buttons=('OK', 'Exit'))
-        self.bottompanel.pack(side=tk.BOTTOM, fill=tk.X)
+        self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Exit'))
+        self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)

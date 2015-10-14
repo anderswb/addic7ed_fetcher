@@ -3,6 +3,8 @@ from model import Model
 from view import View
 from tkinter import messagebox
 
+from selectshowpage import SelectShowPage
+
 __author__ = 'Anders'
 
 
@@ -12,15 +14,13 @@ class Controller:
         self.model = Model()  # create the model object
         self.view = View(self, self.root)  # create the view object
         self.root.geometry("500x300")
+        self.root.minsize(width=500, height=300)
 
-        # bind the view buttons to actions in the controller
-        #self.view.bottompanel.okbutton.bind("<Button>", self.updatelabel)
-        #self.view.bottompanel.exitbutton.bind("<Button>", self.quitprogram)
-
-        #self.view.menu.menubar.bind("<<MenuSelect>>", self.menucallback)
+        # bind the selectshowpage view buttons to actions in the controller
+        self.view.frames[SelectShowPage].buttonpanel.buttons['Exit'].bind('<Button>', self.quitprogram)
 
     def run(self):
-        self.root.title("addic7ed MVC Fetcher")
+        self.root.title("addic7ed Fetcher")
         self.root.deiconify()
         self.root.mainloop()
 
@@ -35,21 +35,7 @@ class Controller:
         else:
             print('Unknown item: ' + item)
 
-    def menucallback(self, event):
-        widget = self.root.nametowidget(event.widget[2:])
-        print(type(widget))
-        print(self.view.menu.filemenu.index())
-
-        #print(m.entrycget(m.index('@%d' % event.y), 'label'))
-        print('hej')
-        #print(self.view.menu.filemenu.index('last'))
-        #print(self.root.call(event.widget, "index", "active") )
-        #widget = self.root.nametowidget(event.widget[2:])
-        #print(type(widget))
-        #print(widget.index(Tk.ACTIVE))
-        #print(self.root.call(event.widget, "index", "Exit"))
-
-    def quitprogram(self):
+    def quitprogram(self, event=None):
         exit()
 
     def updatelabel(self, event):
