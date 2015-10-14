@@ -44,9 +44,7 @@ class DownloadDialog(dialog.Dialog):
     def body(self, master, showlist):
         columns = ['Status', 'Season', 'Episode']
         DownloadDialog.statustree = ttk.Treeview(master, columns=columns, show='headings')
-        #DownloadDialog.progresslabel = tk.Label(master, text="Download progress label")
         DownloadDialog.statustree.grid(row=0)
-        #DownloadDialog.progresslabel.grid(row=1)
         for column in columns:
             DownloadDialog.statustree.heading(column, text=column.title())
         DownloadDialog.populatetree(showlist)
@@ -61,11 +59,37 @@ class DownloadDialog(dialog.Dialog):
 
     @staticmethod
     def updateprogress(index, status):
-        child = DownloadDialog.statustree.get_children()[index]
+        children = DownloadDialog.statustree.get_children()
+        child = children[index]
         season = DownloadDialog.statustree.item(child)['values'][1]
         episode = DownloadDialog.statustree.item(child)['values'][2]
         DownloadDialog.statustree.item(child, values=[status, season, episode])
 
+        alldone = True
+        for child in children:
+            status = DownloadDialog.statustree.item(child)['values'][0]
+            if status != 'Done' or status != 'Failure':
+                alldone = False
+                break
+
+        if alldone:
+            print("Done")
+
     def apply(self):
         pass
 
+    def buttonbox(self):
+        # add standard button box. override if you don't want the
+        # standard buttons
+
+        box = tk.Frame(self)
+
+        w = ttk.Button(box, text="OK", width=10, command=self.ok, default=tk.ACTIVE)
+        w.pack(side=tk.LEFT, padx=5, pady=5)
+        w = ttk.Button(box, text="Cancel", width=10, command=self.cancel)
+        w.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.bind("<Return>", self.ok)
+        self.bind("<Escape>", self.cancel)
+
+        box.pack()
