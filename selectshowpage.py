@@ -1,16 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 
+import page
+
 __author__ = 'Anders'
 
 
-class SelectShowPage(tk.Frame):
-
-    def updatelist(self):
-        pass
-
-    def updatedisplay(self):
-        pass
+class SelectShowPage(page.Page):
 
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
@@ -33,20 +29,5 @@ class SelectShowPage(tk.Frame):
         for i in range(1,100):
             self.listbox1.insert(0, i)
 
-        self.bottompanel = ButtonPanel(self, buttons=('OK', 'Exit'))
+        self.bottompanel = page.ButtonPanel(self, buttons=('OK', 'Exit'))
         self.bottompanel.pack(side=tk.BOTTOM, fill=tk.X)
-
-
-class ButtonPanel(tk.Frame):
-
-    def __init__(self, master=None, cnf={}, **kw):
-        passed_buttons = []
-        for button in kw.pop('buttons', None):
-            passed_buttons.append(button)
-
-        tk.Frame.__init__(self, master, cnf, **kw)
-
-        self.buttons = []
-        for i, button in enumerate(passed_buttons):
-            self.buttons.append(ttk.Button(self, text=button))
-            self.buttons[i].pack(side=tk.RIGHT, padx=5, pady=5)
