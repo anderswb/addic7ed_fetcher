@@ -43,7 +43,6 @@ class View:
 
     def showlogindialog(self):
         logindialog.LoginDialog(self)
-        self.updatetitle()
 
     def showaboutdialog(self):
         messagebox.showinfo("About", "Addic7ed.com fetcher\n"
