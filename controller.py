@@ -72,7 +72,3 @@ class Controller:
 
     def quitprogram(self, event=None):
         exit()
-
-    def updatelabel(self, event):
-        self.model.calculate()
-        self.view.label.set(self.model.res)
