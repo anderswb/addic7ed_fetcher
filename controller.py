@@ -49,7 +49,7 @@ class Controller:
         else:
             print('Unknown menu item: ' + item)
 
-    def selectshowpage_okpressed(self):
+    def selectshowpage_okpressed(self, event=None):
         selectedshow = self.view.frames[SelectShowPage].showslistbox.curselection()[0]
         self.model.displayshow(selectedshow)
         self.view.show_frame(SubtitleSelectionPage)

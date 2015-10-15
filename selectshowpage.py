@@ -20,6 +20,7 @@ class SelectShowPage(page.Page):
 
         frame = tk.Frame(self)
         self.showslistbox = tk.Listbox(frame)
+        self.showslistbox.bind('<Double-Button-1>', controller.selectshowpage_okpressed)
         ysb = ttk.Scrollbar(frame, orient='vertical', command=self.showslistbox.yview)
         self.showslistbox.configure(yscroll=ysb.set)
         self.showslistbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
