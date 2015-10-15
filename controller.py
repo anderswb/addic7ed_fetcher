@@ -31,7 +31,7 @@ class Controller:
 
     def menuitempressed(self, item):
         if item == 'login':
-            pass
+            self.view.showlogindialog()
         elif item == 'about':
             self.view.showaboutdialog()
         elif item == 'exit':
