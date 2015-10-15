@@ -17,12 +17,21 @@ class Controller:
         self.root.geometry("500x300")
         self.root.minsize(width=500, height=300)
 
+        # SELECTSOHWPAGE SETUP
+
         # bind the selectshowpage view buttons to actions in the controller
-        self.view.frames[SelectShowPage].buttonpanel.buttons['Exit'].bind('<Button>', self.quitprogram)
-        self.view.frames[SelectShowPage].buttonpanel.buttons['OK'].bind('<Button>', self.showselected)
+        self.view.frames[SelectShowPage].buttonpanel.buttons['Exit'].bind('<Button-1>', self.quitprogram)
+        self.view.frames[SelectShowPage].buttonpanel.buttons['OK'].bind('<Button-1>', self.showselected)
+
+        # fill up the shows list
+        for show in self.model.get_shows():
+            self.view.addshow(show[1])  # pass the show title to the view
+
+
+        # SUBTITLESELECTIONPAGESETUP
 
         # bind the subtitleselectionpage buttons to actions
-        self.view.frames[SubtitleSelectionPage].buttonpanel.buttons['Back'].bind('<Button>', self.backbutton)
+        self.view.frames[SubtitleSelectionPage].buttonpanel.buttons['Back'].bind('<Button-1>', self.backbutton)
 
     def run(self):
         self.root.title("addic7ed Fetcher")
@@ -48,7 +57,9 @@ class Controller:
             print('Unknown menu item: ' + item)
 
     def showselected(self, event=None):
-        self.view.show_frame(SubtitleSelectionPage)
+        selectedshow = self.view.frames[SelectShowPage].showslistbox.curselection()[0]
+        print(self.model.indextoshow(selectedshow))
+        #self.view.show_frame(SubtitleSelectionPage)
 
     def backbutton(self, event=None):
         self.view.show_frame(SelectShowPage)

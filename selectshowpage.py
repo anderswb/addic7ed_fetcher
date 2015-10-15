@@ -19,10 +19,10 @@ class SelectShowPage(page.Page):
         searchentry.pack(side=tk.TOP, fill=tk.X)
 
         frame = tk.Frame(self)
-        self.listbox1 = tk.Listbox(frame)
-        ysb = ttk.Scrollbar(frame, orient='vertical', command=self.listbox1.yview)
-        self.listbox1.configure(yscroll=ysb.set)
-        self.listbox1.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+        self.showslistbox = tk.Listbox(frame)
+        ysb = ttk.Scrollbar(frame, orient='vertical', command=self.showslistbox.yview)
+        self.showslistbox.configure(yscroll=ysb.set)
+        self.showslistbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
         ysb.pack(side=tk.RIGHT, fill=tk.Y)
         frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 

@@ -24,7 +24,7 @@ class FetchAndParse:
             if value != '0':
                 shows.append((value, show_names[i]))
 
-        shows.sort(key=lambda tup: tup[1], reverse=True)
+        shows.sort(key=lambda tup: tup[1], reverse=False)
         return shows
 
     @staticmethod

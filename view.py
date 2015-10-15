@@ -48,6 +48,9 @@ class View:
         messagebox.showinfo("About", "Addic7ed.com fetcher\n"
                                      "By Anders Brandt")
 
+    def addshow(self, show):
+        self.frames[SelectShowPage].showslistbox.insert(tk.END, show)
+
 
 class Menu:
 
