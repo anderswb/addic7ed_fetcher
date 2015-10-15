@@ -21,6 +21,9 @@ class Controller:
         self.view.frames[SelectShowPage].buttonpanel.buttons['Exit'].bind('<Button>', self.quitprogram)
         self.view.frames[SelectShowPage].buttonpanel.buttons['OK'].bind('<Button>', self.showselected)
 
+        # bind the subtitleselectionpage buttons to actions
+        self.view.frames[SubtitleSelectionPage].buttonpanel.buttons['Back'].bind('<Button>', self.backbutton)
+
     def run(self):
         self.root.title("addic7ed Fetcher")
         self.root.deiconify()
@@ -38,6 +41,9 @@ class Controller:
 
     def showselected(self, event=None):
         self.view.show_frame(SubtitleSelectionPage)
+
+    def backbutton(self, event=None):
+        self.view.show_frame(SelectShowPage)
 
     def quitprogram(self, event=None):
         exit()
