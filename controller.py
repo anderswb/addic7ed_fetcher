@@ -18,7 +18,7 @@ class Controller:
 
         self.model = Model(self.view)  # create the model object
 
-        # SELECTSOHWPAGE SETUP
+        # SELECTSHOWPAGE SETUP
         self.view.frames[SelectShowPage].searchentry.bind("<Return>", self.selectshowpage_filterchanged)
 
         # SUBTITLESELECTIONPAGESETUP
