@@ -15,13 +15,13 @@ class SubtitleSelectionPage(page.Page):
         label1 = ttk.Label(self, text="Unknown show")
         notebook = ttk.Notebook(self)
         filterpanel = FilterPanel(self)
-        buttonpanel = page.ButtonPanel(self, buttons=('Download', 'Back'))
+        self.buttonpanel = page.ButtonPanel(self, buttons=('Download', 'Back'))
 
         # Packing
         label1.pack(side=tk.TOP)
         filterpanel.pack(side=tk.TOP, fill=tk.X)
         notebook.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
+        self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
 
 
 class FilterPanel(tk.Frame):
@@ -30,33 +30,33 @@ class FilterPanel(tk.Frame):
         tk.Frame.__init__(self, master, cnf, **kw)
 
         # Setup the checkboxes
-        self.hivar = tk.StringVar(value='off')
-        self.hdvar = tk.StringVar(value='off')
-        self.corvar = tk.StringVar(value='off')
+        self.hi = tk.StringVar(value='off')
+        self.hd = tk.StringVar(value='off')
+        self.corrected = tk.StringVar(value='off')
 
-        self.check_hi = ttk.Checkbutton(self, text="HI", variable=self.hivar, command=self.hichanged,
+        self.check_hi = ttk.Checkbutton(self, text="HI", variable=self.hi, command=self.hichanged,
                                         onvalue='on', offvalue='off')
-        self.check_hd = ttk.Checkbutton(self, text="HD", variable=self.hdvar, command=self.hdchanged,
+        self.check_hd = ttk.Checkbutton(self, text="HD", variable=self.hd, command=self.hdchanged,
                                         onvalue='on', offvalue='off')
-        self.check_cor = ttk.Checkbutton(self, text="Corrected", variable=self.corvar, command=self.corchanged,
+        self.check_cor = ttk.Checkbutton(self, text="Corrected", variable=self.corrected, command=self.corchanged,
                                          onvalue='on', offvalue='off')
 
-        self.hdvar.set(value='dontcare')
+        self.hd.set(value='dontcare')
         self.check_hd.state(['alternate'])
         self.last_hd_state = 'dontcare'
 
-        self.hivar.set(value='dontcare')
+        self.hi.set(value='dontcare')
         self.check_hi.state(['alternate'])
         self.last_hi_state = 'dontcare'
 
-        self.corvar.set(value='dontcare')
+        self.corrected.set(value='dontcare')
         self.check_cor.state(['alternate'])
         self.last_cor_state = 'dontcare'
 
         # Setup the dropdown menu
-        self.dropdownvar = tk.StringVar(self)
-        self.dropdownvar.set("All languages")  # default value
-        self.dropdown = ttk.OptionMenu(self, self.dropdownvar, "All languages")
+        self.language = tk.StringVar(self)
+        self.language.set("All languages")  # default value
+        self.dropdown = ttk.OptionMenu(self, self.language, "All languages")
 
         self.check_hi.grid(row=0, column=0, sticky='w', padx=10)
         self.check_hd.grid(row=0, column=1, sticky='w', padx=10)
@@ -65,13 +65,13 @@ class FilterPanel(tk.Frame):
         tk.Grid.grid_columnconfigure(self, 3, weight=1)
 
     def hdchanged(self):
-        self.last_hd_state = self.checkboxchange(self.last_hd_state, self.hdvar, self.check_hd)
+        self.last_hd_state = self.checkboxchange(self.last_hd_state, self.hd, self.check_hd)
 
     def hichanged(self):
-        self.last_hi_state = self.checkboxchange(self.last_hi_state, self.hivar, self.check_hi)
+        self.last_hi_state = self.checkboxchange(self.last_hi_state, self.hi, self.check_hi)
 
     def corchanged(self):
-        self.last_cor_state = self.checkboxchange(self.last_cor_state, self.corvar, self.check_cor)
+        self.last_cor_state = self.checkboxchange(self.last_cor_state, self.corrected, self.check_cor)
 
     @staticmethod
     def checkboxchange(last_state, variable_ref, checkbox_ref):
