@@ -22,9 +22,10 @@ class LoginDialog(dialog.Dialog):
         return self.e1 # initial focus
 
     def apply(self):
-        user = self.e1.get()
-        pwd = self.e2.get()
-        try:
-            login.login(user, pwd)
-        except TypeError as e:
-            messagebox.showerror('Login error', e)
+        pass
+        #user = self.e1.get()
+        #pwd = self.e2.get()
+        #try:
+        #    login.login(user, pwd)
+        #except TypeError as e:
+        #    messagebox.showerror('Login error', e)

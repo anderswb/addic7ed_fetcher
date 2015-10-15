@@ -31,19 +31,33 @@ class Controller:
 
     def menuitempressed(self, item):
         if item == 'login':
-            self.view.showlogindialog()
+            logindialog = self.view.showlogindialog()  # show the dialog
+
+            # bind the buttons
+            logindialog.okbutton.bind('<Button>', self.login_okpressed)
+            logindialog.cancelbutton.bind('<Button>', self.login_cancelpressed)
+
+            # wait until the window has been closed, for one reason or another
+            logindialog.wait_window(logindialog)
+
         elif item == 'about':
             self.view.showaboutdialog()
         elif item == 'exit':
             self.quitprogram()
         else:
-            print('Unknown item: ' + item)
+            print('Unknown menu item: ' + item)
 
     def showselected(self, event=None):
         self.view.show_frame(SubtitleSelectionPage)
 
     def backbutton(self, event=None):
         self.view.show_frame(SelectShowPage)
+
+    def login_okpressed(self, event):
+        print('ok')
+
+    def login_cancelpressed(self, event):
+        print('cancel')
 
     def quitprogram(self, event=None):
         exit()

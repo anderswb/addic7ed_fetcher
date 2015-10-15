@@ -34,9 +34,6 @@ class Dialog(Toplevel):
 
         self.initial_focus.focus_set()
 
-        self.wait_window(self)
-
-    #
     # construction hooks
 
     def body(self, master):
@@ -51,13 +48,10 @@ class Dialog(Toplevel):
 
         box = Frame(self)
 
-        w = ttk.Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
-        w.pack(side=LEFT, padx=5, pady=5)
-        w = ttk.Button(box, text="Cancel", width=10, command=self.cancel)
-        w.pack(side=LEFT, padx=5, pady=5)
-
-        self.bind("<Return>", self.ok)
-        self.bind("<Escape>", self.cancel)
+        self.okbutton = ttk.Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
+        self.okbutton.pack(side=LEFT, padx=5, pady=5)
+        self.cancelbutton = ttk.Button(box, text="Cancel", width=10, command=self.cancel)
+        self.cancelbutton.pack(side=LEFT, padx=5, pady=5)
 
         box.pack()
 
@@ -83,13 +77,5 @@ class Dialog(Toplevel):
         self.parent.focus_set()
         self.destroy()
 
-    #
-    # command hooks
-
     def validate(self):
-
-        return 1 # override
-
-    def apply(self):
-
-        pass # override
+        return 1

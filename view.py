@@ -42,7 +42,7 @@ class View:
             tk.Tk.wm_title(self, "Addic7ed Fetcher - not logged in")
 
     def showlogindialog(self):
-        logindialog.LoginDialog(self)
+        return logindialog.LoginDialog(self.master)
 
     def showaboutdialog(self):
         messagebox.showinfo("About", "Addic7ed.com fetcher\n"
