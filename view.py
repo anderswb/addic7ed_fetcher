@@ -5,6 +5,7 @@ import logindialog
 import login
 
 from selectshowpage import SelectShowPage
+from subtitleselectionpage import SubtitleSelectionPage
 
 __author__ = 'Anders'
 
@@ -14,15 +15,17 @@ class View:
     def __init__(self, parent, master):
         self.master = master
         container = tk.Frame(master)
-        container.pack(side=tk.TOP, fill=tk.BOTH, expand=1, padx=2, pady=2)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
         self.menu = Menu(parent, master)
 
         self.frames = {}
-        for F in (SelectShowPage, ):
-            frame = F(container)
-            self.frames[F] = frame
-            frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        for page in (SelectShowPage, SubtitleSelectionPage):
+            frame = page(container)
+            self.frames[page] = frame
+            frame.grid(row=0, column=0, sticky='nsew')
 
         self.show_frame(SelectShowPage)
 
