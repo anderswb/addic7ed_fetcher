@@ -11,7 +11,7 @@ class Page(tk.Frame):
     def updatedisplay(self):
         pass
 
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label1 = ttk.Label(self, text="Please override the __init__ method")
 
@@ -23,14 +23,14 @@ class Page(tk.Frame):
 
 class ButtonPanel(tk.Frame):
 
-    def __init__(self, master=None, cnf={}, **kw):
-        passed_buttons = []
-        for button in kw.pop('buttons', None):
-            passed_buttons.append(button)
-
-        tk.Frame.__init__(self, master, cnf, **kw)
+    def __init__(self, master, buttons, cnf={}, commands=None):
+        tk.Frame.__init__(self, master, cnf)
 
         self.buttons = {}
-        for i, button in enumerate(passed_buttons):
-            self.buttons[button] = ttk.Button(self, text=button)
-            self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)
+        for i, button in enumerate(buttons):
+            if commands is None:
+                self.buttons[button] = ttk.Button(self, text=button)
+                self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)
+            else:
+                self.buttons[button] = ttk.Button(self, text=button, command=commands[i])
+                self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)

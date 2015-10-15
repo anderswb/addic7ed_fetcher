@@ -9,7 +9,7 @@ __author__ = 'Anders'
 class SubtitleSelectionPage(page.Page):
 
 
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         label1 = ttk.Label(self, text="Unknown show")

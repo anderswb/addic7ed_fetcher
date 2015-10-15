@@ -12,18 +12,18 @@ __author__ = 'Anders'
 
 class View:
 
-    def __init__(self, parent, master):
+    def __init__(self, controller, master):
         self.master = master
         container = tk.Frame(master)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.menu = Menu(parent, master)
+        self.menu = Menu(controller, master)
 
         self.frames = {}
         for page in (SelectShowPage, SubtitleSelectionPage):
-            frame = page(container)
+            frame = page(container, controller)
             self.frames[page] = frame
             frame.grid(row=0, column=0, sticky='nsew')
 
@@ -47,6 +47,9 @@ class View:
     def showaboutdialog(self):
         messagebox.showinfo("About", "Addic7ed.com fetcher\n"
                                      "By Anders Brandt")
+
+    def clearshows(self):
+        self.frames[SelectShowPage].showslistbox.delete(0, 'end')
 
     def addshow(self, show):
         self.frames[SelectShowPage].showslistbox.insert(tk.END, show)

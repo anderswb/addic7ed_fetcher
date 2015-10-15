@@ -12,26 +12,19 @@ __author__ = 'Anders'
 class Controller:
     def __init__(self):
         self.root = Tk.Tk()
-        self.model = Model()  # create the model object
         self.view = View(self, self.root)  # create the view object
         self.root.geometry("500x300")
         self.root.minsize(width=500, height=300)
 
+        self.model = Model(self.view)  # create the model object
+
         # SELECTSOHWPAGE SETUP
-
-        # bind the selectshowpage view buttons to actions in the controller
-        self.view.frames[SelectShowPage].buttonpanel.buttons['Exit'].bind('<Button-1>', self.quitprogram)
-        self.view.frames[SelectShowPage].buttonpanel.buttons['OK'].bind('<Button-1>', self.showselected)
-
-        # fill up the shows list
-        for show in self.model.get_shows():
-            self.view.addshow(show[1])  # pass the show title to the view
-
+        self.view.frames[SelectShowPage].searchentry.bind("<Return>", self.selectshowpage_filterchanged)
 
         # SUBTITLESELECTIONPAGESETUP
 
         # bind the subtitleselectionpage buttons to actions
-        self.view.frames[SubtitleSelectionPage].buttonpanel.buttons['Back'].bind('<Button-1>', self.backbutton)
+        self.view.frames[SubtitleSelectionPage].buttonpanel.buttons['Back'].bind('<Button-1>', self.showsubtitlespage_backbutton)
 
     def run(self):
         self.root.title("addic7ed Fetcher")
@@ -56,13 +49,20 @@ class Controller:
         else:
             print('Unknown menu item: ' + item)
 
-    def showselected(self, event=None):
+    def selectshowpage_okpressed(self):
         selectedshow = self.view.frames[SelectShowPage].showslistbox.curselection()[0]
-        print(self.model.indextoshow(selectedshow))
-        #self.view.show_frame(SubtitleSelectionPage)
+        self.model.displayshow(selectedshow)
+        self.view.show_frame(SubtitleSelectionPage)
 
-    def backbutton(self, event=None):
+    def selectshowpage_exitpressed(self):
+        quit()
+
+    def showsubtitlespage_backbutton(self, event=None):
         self.view.show_frame(SelectShowPage)
+
+    def selectshowpage_filterchanged(self, event):
+        filterstring = self.view.frames[SelectShowPage].searchentry.get()
+        self.model.updateshowlist(filterstring)
 
     def login_okpressed(self, event):
         print('ok')

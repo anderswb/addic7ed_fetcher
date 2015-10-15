@@ -8,15 +8,15 @@ __author__ = 'Anders'
 
 class SelectShowPage(page.Page):
 
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label1 = ttk.Label(self, text="Select a show:")
 
-        searchentry = ttk.Entry(self)
-        searchentry.insert(0, '*')
+        self.searchentry = ttk.Entry(self)
+        self.searchentry.insert(0, '*')
 
         label1.pack(side=tk.TOP)
-        searchentry.pack(side=tk.TOP, fill=tk.X)
+        self.searchentry.pack(side=tk.TOP, fill=tk.X)
 
         frame = tk.Frame(self)
         self.showslistbox = tk.Listbox(frame)
@@ -26,5 +26,7 @@ class SelectShowPage(page.Page):
         ysb.pack(side=tk.RIGHT, fill=tk.Y)
         frame.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Exit'))
+        self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Exit'),
+                                            commands=[controller.selectshowpage_okpressed,
+                                                      controller.selectshowpage_exitpressed])
         self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
