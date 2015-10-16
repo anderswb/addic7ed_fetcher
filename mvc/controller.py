@@ -1,6 +1,6 @@
 import tkinter as Tk
-from model import Model
-from view import View
+from mvc.model import Model as Model
+from mvc.view import View as View
 
 from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
