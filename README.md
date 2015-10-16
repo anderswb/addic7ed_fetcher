@@ -1,4 +1,4 @@
-# Project Name
+# Addic7ed Fetcher
 
 tkinter GUI application for fetching subtitles off of addic7ed.com.
 
