@@ -66,5 +66,15 @@ class Controller:
     def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
         self.model.updatesubtitlelist(language, hd, hi, corrected)
 
+    def downloadpage_okpressed(self):
+        print('ok')
+
+    def downloadpage_cancelpressed(self):
+        print('cancel')
+
+    def downloadpage_backpressed(self):
+        print('back')
+
+
     def quitprogram(self, event=None):
         exit()

@@ -23,14 +23,20 @@ class Page(tk.Frame):
 
 class ButtonPanel(tk.Frame):
 
-    def __init__(self, master, buttons, cnf={}, commands=None):
+    def __init__(self, master, buttons, cnf={}, commands=None, states=None):
         tk.Frame.__init__(self, master, cnf)
 
         self.buttons = {}
         for i, button in enumerate(buttons):
+
+            if states is None:
+                state = tk.ACTIVE
+            else:
+                state = states[i]
+
             if commands is None:
-                self.buttons[button] = ttk.Button(self, text=button)
+                self.buttons[button] = ttk.Button(self, text=button, state=state)
                 self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)
             else:
-                self.buttons[button] = ttk.Button(self, text=button, command=commands[i])
+                self.buttons[button] = ttk.Button(self, text=button, state=state, command=commands[i])
                 self.buttons[button].pack(side=tk.RIGHT, padx=5, pady=2)

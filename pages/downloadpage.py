@@ -25,7 +25,9 @@ class DownloadPage(page.Page):
         self.statustree.tag_configure('red', background='tomato')
         self.statustree.tag_configure('yellow', background='yellow')
 
-        self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Back'),
-                                            commands=[controller.selectshowpage_okpressed,
-                                                      controller.selectshowpage_exitpressed])
+        self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Cancel', 'Back'),
+                                            commands=(controller.downloadpage_okpressed,
+                                                      controller.downloadpage_cancelpressed,
+                                                      controller.downloadpage_backpressed),
+                                            states=(tk.DISABLED, tk.ACTIVE, tk.DISABLED))
         self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
