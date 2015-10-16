@@ -5,8 +5,13 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font
 import time
+from re import findall
+from os import path
+from os import makedirs
 
 import webpageaccess.login as login
+
+from webpageaccess.downloadsession import Session as Session
 
 __author__ = 'Anders'
 
@@ -178,29 +183,42 @@ class Model:
             self.view.add_downloaditem('Pending', sub['season'], sub['episode'], 'white')
 
     def downloadandsave(self):
+        session = Session()
         for idx, sub in enumerate(self.substodownload):
             self.view.change_downloaditemstatus(idx, 'Downloading', 'yellow')
-            time.sleep(1)
-            self.view.change_downloaditemstatus(idx, 'Done', 'green')
 
-        # request = session.get(url)
-        # content = request.content  # get the file content
-        #
-        # if content[0:8] == b'<!DOCTYP':
-        #     messagebox.showerror('Download limit', 'Daily download count exceeded.')
-        #     return False
-        # else:
-        #     # get the filename from the header
-        #     headers = request.headers
-        #     if 'Content-Disposition' in headers:  # check if a filename was included
-        #         content_disp = headers['Content-Disposition']
-        #         filename = findall(r'filename="(.+)"', content_disp)[0]
-        #
-        #         # Save the file content
-        #         with open(filename, 'wb') as fp:
-        #             fp.write(content)
-        #         return True
-        #     else:
-        #         messagebox.showerror('Download error', 'Can\'t download subtitle, '
-        #                                                'it is probably not complete.')
-        #         return False
+            request = session.get(sub['dl link'])
+            content = request.content  # get the file content
+
+            success = True
+            if content[0:8] == b'<!DOCTYP':
+                #messagebox.showerror('Download limit', 'Daily download count exceeded.')
+                print('Download limit')
+                success = False
+                break
+            else:
+                # get the filename from the header
+                headers = request.headers
+                if 'Content-Disposition' in headers:  # check if a filename was included
+                    content_disp = headers['Content-Disposition']
+                    dir = './downloads'
+                    filename = findall(r'filename="(.+)"', content_disp)[0]
+                    filename = path.join(dir, filename)
+
+                    if not path.exists(dir):
+                        makedirs(dir)
+
+                    # Save the file content
+                    with open(filename, 'wb') as fp:
+                        fp.write(content)
+                else:
+                    #messagebox.showerror('Download error', 'Can\'t download subtitle, '
+                    #                                       'it is probably not complete.')
+                    print('Download error')
+                    success = False
+
+            if success == True:
+                self.view.change_downloaditemstatus(idx, 'Done', 'green')
+            else:
+                self.view.change_downloaditemstatus(idx, 'Failed', 'red')
+
