@@ -73,8 +73,7 @@ class Controller:
         self.model.canceldownload()
 
     def downloadpage_backpressed(self):
-        print('back')
-
+        self.view.show_frame(SubtitleSelectionPage)
 
     def quitprogram(self, event=None):
         exit()
