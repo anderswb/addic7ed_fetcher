@@ -1,11 +1,11 @@
-from fetchandparse import FetchAndParse
+from webpageaccess.fetchandparse import FetchAndParse as FetchAndParse
 from fnmatch import fnmatch
 from pages.subtitleselectionpage import SubtitleSelectionPage
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font
 
-import login
+import webpageaccess.login as login
 
 __author__ = 'Anders'
 

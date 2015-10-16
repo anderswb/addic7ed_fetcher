@@ -1,4 +1,4 @@
-from downloadsession import session
+from webpageaccess.downloadsession import session as session
 
 def login(user, password):
     result = session.post('/dologin.php', data={

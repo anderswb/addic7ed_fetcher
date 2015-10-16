@@ -1,7 +1,7 @@
 import tkinter as tk
 import dialogs.dialog as dialog
 from tkinter import ttk
-import login
+import webpageaccess.login as login
 from tkinter import messagebox
 
 __author__ = 'Anders'
