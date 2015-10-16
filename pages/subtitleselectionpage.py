@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-import page
+import pages.page as page
 
 __author__ = 'Anders'
 

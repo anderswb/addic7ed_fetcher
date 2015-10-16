@@ -1,10 +1,9 @@
 import tkinter as Tk
 from model import Model
 from view import View
-from tkinter import messagebox
 
-from selectshowpage import SelectShowPage
-from subtitleselectionpage import SubtitleSelectionPage
+from pages.selectshowpage import SelectShowPage as SelectShowPage
+from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
 
 __author__ = 'Anders'
 
@@ -17,13 +16,9 @@ class Controller:
         self.root.minsize(width=500, height=300)
 
         self.model = Model(self.view)  # create the model object
-
         self.model.updatetitle()
 
-        # SELECTSHOWPAGE SETUP
         self.view.frames[SelectShowPage].searchentry.bind("<Return>", self.selectshowpage_filterchanged)
-
-        # SUBTITLESELECTIONPAGE SETUP
 
     def run(self):
         self.root.deiconify()

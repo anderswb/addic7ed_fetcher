@@ -1,5 +1,5 @@
 import tkinter as tk
-import dialog
+import dialogs.dialog as dialog
 from tkinter import ttk
 import login
 from tkinter import messagebox

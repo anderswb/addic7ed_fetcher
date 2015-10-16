@@ -1,6 +1,6 @@
 from fetchandparse import FetchAndParse
 from fnmatch import fnmatch
-from subtitleselectionpage import SubtitleSelectionPage
+from pages.subtitleselectionpage import SubtitleSelectionPage
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font

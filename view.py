@@ -1,11 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 
-import logindialog
-import login
+import dialogs.logindialog as logindialog
 
-from selectshowpage import SelectShowPage
-from subtitleselectionpage import SubtitleSelectionPage
+from pages.selectshowpage import SelectShowPage as SelectShowPage
+from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
 
 __author__ = 'Anders'
 
