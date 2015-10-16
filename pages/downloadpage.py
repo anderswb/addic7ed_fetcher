@@ -3,6 +3,8 @@ from tkinter import ttk
 
 import pages.page as page
 
+from tkinter.font import Font
+
 __author__ = 'Anders'
 
 
@@ -16,8 +18,7 @@ class DownloadPage(page.Page):
         self.statustree.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         for column in columns:
             self.statustree.heading(column, text=column.title())
-        #self.populatetree(showlist)
-
+            self.statustree.column(column, width=Font().measure(column.title()))
 
         self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Back'),
                                             commands=[controller.selectshowpage_okpressed,
