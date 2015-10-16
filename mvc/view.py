@@ -51,9 +51,17 @@ class View:
     def addshow(self, show):
         self.frames[SelectShowPage].showslistbox.insert(tk.END, show)
 
-    def add_downloaditem(self, status, season, episode):
+    def add_downloaditem(self, status, season, episode, color):
         frame = self.frames[DownloadPage]
-        frame.statustree.insert('', 'end', values=[str(status), str(season), str(episode)], tag='white')
+        frame.statustree.insert('', 'end', values=[str(status), str(season), str(episode)], tag=color)
+
+    def change_downloaditemstatus(self, index, status, color):
+        frame = self.frames[DownloadPage]
+        children = frame.statustree.get_children()
+        child = children[index]
+        season = frame.statustree.item(child)['values'][1]
+        episode = frame.statustree.item(child)['values'][2]
+        frame.statustree.item(child, values=[status, season, episode], tag=color)
 
 
 class Menu:

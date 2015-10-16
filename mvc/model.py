@@ -175,4 +175,4 @@ class Model:
                 #urllist.append('http://www.addic7ed.com' + selected_dataset['dl link'])
 
         for sub in substodownload:
-            self.view.add_downloaditem('Pending', sub['season'], sub['episode'])
+            self.view.add_downloaditem('Pending', sub['season'], sub['episode'], 'white')
