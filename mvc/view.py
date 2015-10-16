@@ -5,6 +5,7 @@ import dialogs.logindialog as logindialog
 
 from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
+from pages.downloadpage import DownloadPage as DownloadPage
 
 __author__ = 'Anders'
 
@@ -22,7 +23,7 @@ class View:
         self.menu = Menu(controller, master)
 
         self.frames = {}
-        for page in (SelectShowPage, SubtitleSelectionPage):
+        for page in (SelectShowPage, SubtitleSelectionPage, DownloadPage):
             frame = page(container, controller)
             self.frames[page] = frame
             frame.grid(row=0, column=0, sticky='nsew')

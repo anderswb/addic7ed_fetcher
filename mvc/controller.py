@@ -4,6 +4,7 @@ from mvc.view import View as View
 
 from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
+from pages.downloadpage import DownloadPage as DownloadPage
 
 __author__ = 'Anders'
 
@@ -12,8 +13,8 @@ class Controller:
     def __init__(self):
         self.root = Tk.Tk()
         self.view = View(self, self.root)  # create the view object
-        self.root.geometry("500x300")
-        self.root.minsize(width=500, height=300)
+        self.root.geometry("500x400")
+        self.root.minsize(width=500, height=400)
 
         self.model = Model(self.view)  # create the model object
         self.model.updatetitle()
@@ -55,7 +56,7 @@ class Controller:
         self.model.updateshowlist(filterstring)
 
     def subtitleselectionpage_downloadpressed(self):
-        print('Download pressed!')
+        self.view.show_frame(DownloadPage)
 
     def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
         self.model.updatesubtitlelist(language, hd, hi, corrected)
