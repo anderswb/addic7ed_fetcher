@@ -157,3 +157,22 @@ class Model:
 
     def login(self, username, password):
         login.login(username, password)
+
+    def add_downloads(self):
+        substodownload = []
+        #urllist = []
+
+        # find all selections in all trees
+        for (season, seasontree) in self.subtitletrees.items():
+            for selection in seasontree.selection():
+
+                # for all selections:
+                selection_index = seasontree.index(selection)  # get selection
+                selected_dataset = self.displayedsubs[season][selection_index]  # get dataset matching the selection
+                # add the rest of the url
+                selected_dataset['dl link'] = 'http://www.addic7ed.com' + selected_dataset['dl link']
+                substodownload.append(selected_dataset)  # append the dataset to the list of subs to download
+                #urllist.append('http://www.addic7ed.com' + selected_dataset['dl link'])
+
+        for sub in substodownload:
+            self.view.add_downloaditem('Pending', sub['season'], sub['episode'])

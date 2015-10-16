@@ -51,6 +51,10 @@ class View:
     def addshow(self, show):
         self.frames[SelectShowPage].showslistbox.insert(tk.END, show)
 
+    def add_downloaditem(self, status, season, episode):
+        frame = self.frames[DownloadPage]
+        frame.statustree.insert('', 'end', values=[str(status), str(season), str(episode)])
+
 
 class Menu:
 

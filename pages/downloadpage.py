@@ -23,4 +23,3 @@ class DownloadPage(page.Page):
                                             commands=[controller.selectshowpage_okpressed,
                                                       controller.selectshowpage_exitpressed])
         self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
-

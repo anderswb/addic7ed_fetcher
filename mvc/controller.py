@@ -56,6 +56,7 @@ class Controller:
         self.model.updateshowlist(filterstring)
 
     def subtitleselectionpage_downloadpressed(self):
+        self.model.add_downloads()
         self.view.show_frame(DownloadPage)
 
     def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
