@@ -8,22 +8,21 @@ __author__ = 'Anders'
 
 class SubtitleSelectionPage(page.Page):
 
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.label = tk.StringVar()
         label1 = ttk.Label(self, text="Unknown show", textvariable=self.label)
-        notebook = ttk.Notebook(self)
-        filterpanel = FilterPanel(self)
+        self.notebook = ttk.Notebook(self)
+        self.filterpanel = FilterPanel(self)
         self.buttonpanel = page.ButtonPanel(self, buttons=('Download', 'Back'),
                                             commands=(controller.subtitleselectionpage_downloadpressed,
                                                       controller.subtitleselectionpage_backpressed))
 
         # Packing
         label1.pack(side=tk.TOP)
-        filterpanel.pack(side=tk.TOP, fill=tk.X)
-        notebook.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        self.filterpanel.pack(side=tk.TOP, fill=tk.X)
+        self.notebook.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
 
 

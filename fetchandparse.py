@@ -6,6 +6,8 @@ __author__ = 'Anders'
 
 class FetchAndParse:
 
+    dataset_labels = ['episode', 'name', 'language', 'versions', 'completed', 'hi', 'corrected', 'hd']
+
     @staticmethod
     def getshows():
         """
