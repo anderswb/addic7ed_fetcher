@@ -20,6 +20,10 @@ class DownloadPage(page.Page):
             self.statustree.heading(column, text=column.title())
             self.statustree.column(column, width=Font().measure(column.title()))
 
+        self.statustree.tag_configure('white', background='white')
+        self.statustree.tag_configure('green', background='pale green')
+        self.statustree.tag_configure('red', background='tomato')
+
         self.buttonpanel = page.ButtonPanel(self, buttons=('OK', 'Back'),
                                             commands=[controller.selectshowpage_okpressed,
                                                       controller.selectshowpage_exitpressed])

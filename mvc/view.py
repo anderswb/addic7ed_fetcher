@@ -53,7 +53,7 @@ class View:
 
     def add_downloaditem(self, status, season, episode):
         frame = self.frames[DownloadPage]
-        frame.statustree.insert('', 'end', values=[str(status), str(season), str(episode)])
+        frame.statustree.insert('', 'end', values=[str(status), str(season), str(episode)], tag='white')
 
 
 class Menu:
