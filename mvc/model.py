@@ -89,11 +89,7 @@ class Model:
 
         self.updatesubtitlelist('All languages', 'dontcare', 'dontcare', 'dontcare')
 
-    def language_dropdownchanged(self, language):
-        print(language)
-
     def updatesubtitlelist(self, language, hd, hi, corrected):
-        print(language, hd, hi, corrected)
         self.displayedsubs = {}
 
         # iterate over each subtitle available for the current show
