@@ -62,5 +62,8 @@ class Controller:
     def subtitleselectionpage_downloadpressed(self):
         print('Download pressed!')
 
+    def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
+        self.model.updatesubtitlelist(language, hd, hi, corrected)
+
     def quitprogram(self, event=None):
         exit()

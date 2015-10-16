@@ -11,6 +11,8 @@ class SubtitleSelectionPage(page.Page):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
+        self.controller = controller
+
         self.label = tk.StringVar()
         label1 = ttk.Label(self, text="Unknown show", textvariable=self.label)
         self.notebook = ttk.Notebook(self)
@@ -30,6 +32,8 @@ class FilterPanel(tk.Frame):
 
     def __init__(self, master=None, cnf={}, **kw):
         tk.Frame.__init__(self, master, cnf, **kw)
+
+        self.master = master
 
         # Setup the checkboxes
         self.hi = tk.StringVar(value='off')
@@ -58,7 +62,8 @@ class FilterPanel(tk.Frame):
         # Setup the dropdown menu
         self.language = tk.StringVar(self)
         self.language.set("All languages")  # default value
-        self.dropdown = ttk.OptionMenu(self, self.language, "All languages")
+        self.dropdown = ttk.OptionMenu(self, self.language)
+        self.languageselected = 'All languages'
 
         self.check_hi.grid(row=0, column=0, sticky='w', padx=10)
         self.check_hd.grid(row=0, column=1, sticky='w', padx=10)
@@ -68,12 +73,25 @@ class FilterPanel(tk.Frame):
 
     def hdchanged(self):
         self.last_hd_state = self.checkboxchange(self.last_hd_state, self.hd, self.check_hd)
+        self.filterchanged()
 
     def hichanged(self):
         self.last_hi_state = self.checkboxchange(self.last_hi_state, self.hi, self.check_hi)
+        self.filterchanged()
 
     def corchanged(self):
         self.last_cor_state = self.checkboxchange(self.last_cor_state, self.corrected, self.check_cor)
+        self.filterchanged()
+
+    def language_dropdownchanged(self, language):
+        self.language.set(language)
+        self.filterchanged()
+
+    def filterchanged(self):
+        self.master.controller.subtitleselectionpage_filterchanged(self.language.get(),
+                                                                   self.hd.get(),
+                                                                   self.hi.get(),
+                                                                   self.corrected.get())
 
     @staticmethod
     def checkboxchange(last_state, variable_ref, checkbox_ref):

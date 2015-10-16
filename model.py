@@ -81,11 +81,11 @@ class Model:
         menu.delete(0, "end")
         menu.add_command(label="All languages",
                          command=lambda value="All languages":
-                         self.language_dropdownchanged(value))
+                         page.filterpanel.language_dropdownchanged(value))
         for language in languages:
             menu.add_command(label=language,
                              command=lambda value=language:
-                             self.language_dropdownchanged(value))
+                             page.filterpanel.language_dropdownchanged(value))
 
         self.updatesubtitlelist('All languages', 'dontcare', 'dontcare', 'dontcare')
 
@@ -93,6 +93,7 @@ class Model:
         print(language)
 
     def updatesubtitlelist(self, language, hd, hi, corrected):
+        print(language, hd, hi, corrected)
         self.displayedsubs = {}
 
         # iterate over each subtitle available for the current show
@@ -117,7 +118,7 @@ class Model:
                     (episodesub['hi'] == True and hi == 'on') or \
                     (episodesub['hi'] == False and hi == 'off')
 
-                corshow = hi == 'dontcare' or \
+                corshow = corrected == 'dontcare' or \
                     (episodesub['corrected'] == True and corrected == 'on') or \
                     (episodesub['corrected'] == False and corrected == 'off')
 
