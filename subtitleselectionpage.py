@@ -12,10 +12,13 @@ class SubtitleSelectionPage(page.Page):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        label1 = ttk.Label(self, text="Unknown show")
+        self.label = tk.StringVar()
+        label1 = ttk.Label(self, text="Unknown show", textvariable=self.label)
         notebook = ttk.Notebook(self)
         filterpanel = FilterPanel(self)
-        self.buttonpanel = page.ButtonPanel(self, buttons=('Download', 'Back'))
+        self.buttonpanel = page.ButtonPanel(self, buttons=('Download', 'Back'),
+                                            commands=(controller.subtitleselectionpage_downloadpressed,
+                                                      controller.subtitleselectionpage_backpressed))
 
         # Packing
         label1.pack(side=tk.TOP)

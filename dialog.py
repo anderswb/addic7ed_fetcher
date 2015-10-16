@@ -48,10 +48,10 @@ class Dialog(Toplevel):
 
         box = Frame(self)
 
-        self.okbutton = ttk.Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
-        self.okbutton.pack(side=LEFT, padx=5, pady=5)
-        self.cancelbutton = ttk.Button(box, text="Cancel", width=10, command=self.cancel)
-        self.cancelbutton.pack(side=LEFT, padx=5, pady=5)
+        okbutton = ttk.Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
+        okbutton.pack(side=LEFT, padx=5, pady=5)
+        cancelbutton = ttk.Button(box, text="Cancel", width=10, command=self.cancel)
+        cancelbutton.pack(side=LEFT, padx=5, pady=5)
 
         box.pack()
 

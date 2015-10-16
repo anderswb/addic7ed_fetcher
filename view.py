@@ -14,6 +14,7 @@ class View:
 
     def __init__(self, controller, master):
         self.master = master
+
         container = tk.Frame(master)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
@@ -34,15 +35,11 @@ class View:
         frame.updatedisplay()
         frame.tkraise()
 
-    def updatetitle(self):
-        user = login.get_current_user()
-        if user is not None:
-            tk.Tk.wm_title(self, "Addic7ed Fetcher - logged in as: {}".format(user))
-        else:
-            tk.Tk.wm_title(self, "Addic7ed Fetcher - not logged in")
+    def settitle(self, title):
+        self.master.title(title)
 
-    def showlogindialog(self):
-        return logindialog.LoginDialog(self.master)
+    def showlogindialog(self, model):
+        return logindialog.LoginDialog(self.master, model, title='Login')
 
     def showaboutdialog(self):
         messagebox.showinfo("About", "Addic7ed.com fetcher\n"

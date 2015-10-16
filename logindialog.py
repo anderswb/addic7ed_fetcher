@@ -9,6 +9,10 @@ __author__ = 'Anders'
 
 class LoginDialog(dialog.Dialog):
 
+    def __init__(self, parent, model, title=None):
+        dialog.Dialog.__init__(self, parent, title)
+        self.model = model
+
     def body(self, master):
 
         tk.Label(master, text="Username:").grid(row=0)
@@ -19,13 +23,15 @@ class LoginDialog(dialog.Dialog):
 
         self.e1.grid(row=0, column=1)
         self.e2.grid(row=1, column=1)
-        return self.e1 # initial focus
+        return self.e1  # initial focus
+
+    def validate(self):
+        try:
+            self.model.login(self.e1.get(), self.e2.get())
+            return True
+        except TypeError as e:
+            messagebox.showerror('Login error', e)
+            return False
 
     def apply(self):
         pass
-        #user = self.e1.get()
-        #pwd = self.e2.get()
-        #try:
-        #    login.login(user, pwd)
-        #except TypeError as e:
-        #    messagebox.showerror('Login error', e)
