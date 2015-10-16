@@ -6,6 +6,8 @@ from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
 from pages.downloadpage import DownloadPage as DownloadPage
 
+import threading
+
 __author__ = 'Anders'
 
 
@@ -57,6 +59,8 @@ class Controller:
 
     def subtitleselectionpage_downloadpressed(self):
         self.model.add_downloads()
+        thread = threading.Thread(target=self.model.downloadandsave)
+        thread.start()
         self.view.show_frame(DownloadPage)
 
     def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):

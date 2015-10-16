@@ -4,6 +4,7 @@ from pages.subtitleselectionpage import SubtitleSelectionPage
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font
+import time
 
 import webpageaccess.login as login
 
@@ -21,6 +22,7 @@ class Model:
         self.subtitles = None
         self.subtitletrees = {}
         self.displayedsubs = {}
+        self.substodownload = []
 
         # fill up the shows list
         self.updateshowlist('*')
@@ -159,7 +161,7 @@ class Model:
         login.login(username, password)
 
     def add_downloads(self):
-        substodownload = []
+        self.substodownload = []
 
         # find all selections in all trees
         for (season, seasontree) in self.subtitletrees.items():
@@ -170,7 +172,35 @@ class Model:
                 selected_dataset = self.displayedsubs[season][selection_index]  # get dataset matching the selection
                 # add the rest of the url
                 selected_dataset['dl link'] = 'http://www.addic7ed.com' + selected_dataset['dl link']
-                substodownload.append(selected_dataset)  # append the dataset to the list of subs to download
+                self.substodownload.append(selected_dataset)  # append the dataset to the list of subs to download
 
-        for sub in substodownload:
+        for sub in self.substodownload:
             self.view.add_downloaditem('Pending', sub['season'], sub['episode'], 'white')
+
+    def downloadandsave(self):
+        for idx, sub in enumerate(self.substodownload):
+            self.view.change_downloaditemstatus(idx, 'Downloading', 'yellow')
+            time.sleep(1)
+            self.view.change_downloaditemstatus(idx, 'Done', 'green')
+
+        # request = session.get(url)
+        # content = request.content  # get the file content
+        #
+        # if content[0:8] == b'<!DOCTYP':
+        #     messagebox.showerror('Download limit', 'Daily download count exceeded.')
+        #     return False
+        # else:
+        #     # get the filename from the header
+        #     headers = request.headers
+        #     if 'Content-Disposition' in headers:  # check if a filename was included
+        #         content_disp = headers['Content-Disposition']
+        #         filename = findall(r'filename="(.+)"', content_disp)[0]
+        #
+        #         # Save the file content
+        #         with open(filename, 'wb') as fp:
+        #             fp.write(content)
+        #         return True
+        #     else:
+        #         messagebox.showerror('Download error', 'Can\'t download subtitle, '
+        #                                                'it is probably not complete.')
+        #         return False
