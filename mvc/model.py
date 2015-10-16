@@ -191,7 +191,7 @@ class Model:
             content = request.content  # get the file content
 
             success = True
-            if content[0:8] == b'<!DOCTYP':
+            if content[0:9] == b'<!DOCTYPE':
                 #messagebox.showerror('Download limit', 'Daily download count exceeded.')
                 print('Download limit')
                 success = False
