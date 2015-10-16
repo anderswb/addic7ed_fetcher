@@ -160,7 +160,6 @@ class Model:
 
     def add_downloads(self):
         substodownload = []
-        #urllist = []
 
         # find all selections in all trees
         for (season, seasontree) in self.subtitletrees.items():
@@ -172,7 +171,6 @@ class Model:
                 # add the rest of the url
                 selected_dataset['dl link'] = 'http://www.addic7ed.com' + selected_dataset['dl link']
                 substodownload.append(selected_dataset)  # append the dataset to the list of subs to download
-                #urllist.append('http://www.addic7ed.com' + selected_dataset['dl link'])
 
         for sub in substodownload:
             self.view.add_downloaditem('Pending', sub['season'], sub['episode'], 'white')
