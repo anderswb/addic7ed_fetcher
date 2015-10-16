@@ -1,6 +1,7 @@
 from webpageaccess.fetchandparse import FetchAndParse as FetchAndParse
 from fnmatch import fnmatch
 from pages.subtitleselectionpage import SubtitleSelectionPage
+from pages.downloadpage import DownloadPage as DownloadPage
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font
@@ -28,6 +29,8 @@ class Model:
         self.subtitletrees = {}
         self.displayedsubs = {}
         self.substodownload = []
+
+        self.cancel = False
 
         # fill up the shows list
         self.updateshowlist('*')
@@ -217,8 +220,22 @@ class Model:
                     print('Download error')
                     success = False
 
+            if self.cancel:
+                break
+
             if success == True:
                 self.view.change_downloaditemstatus(idx, 'Done', 'green')
             else:
                 self.view.change_downloaditemstatus(idx, 'Failed', 'red')
 
+        self.cancel = False
+        self.downloaddone()
+
+    def downloaddone(self):
+        page = self.view.frames[DownloadPage]
+        page.buttonpanel.buttons['OK'].configure(state=tk.ACTIVE)
+        page.buttonpanel.buttons['Cancel'].configure(state=tk.DISABLED)
+        page.buttonpanel.buttons['Back'].configure(state=tk.ACTIVE)
+
+    def canceldownload(self):
+        self.cancel = True

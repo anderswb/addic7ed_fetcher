@@ -70,7 +70,7 @@ class Controller:
         print('ok')
 
     def downloadpage_cancelpressed(self):
-        print('cancel')
+        self.model.canceldownload()
 
     def downloadpage_backpressed(self):
         print('back')
