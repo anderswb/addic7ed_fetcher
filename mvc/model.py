@@ -245,3 +245,7 @@ class Model:
 
     def canceldownload(self):
         self.cancel = True
+        page = self.view.frames[DownloadPage]
+        page.buttonpanel.buttons['OK'].configure(state=tk.ACTIVE)
+        page.buttonpanel.buttons['Cancel'].configure(state=tk.DISABLED)
+        page.buttonpanel.buttons['Back'].configure(state=tk.ACTIVE)

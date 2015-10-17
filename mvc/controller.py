@@ -2,6 +2,8 @@ import tkinter as Tk
 from mvc.model import Model as Model
 from mvc.view import View as View
 
+import tkinter as tk
+
 from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
 from pages.downloadpage import DownloadPage as DownloadPage
@@ -62,6 +64,11 @@ class Controller:
         thread = threading.Thread(target=self.model.downloadandsave)
         thread.start()
         self.view.show_frame(DownloadPage)
+
+        page = self.view.frames[DownloadPage]
+        page.buttonpanel.buttons['OK'].configure(state=tk.DISABLED)
+        page.buttonpanel.buttons['Cancel'].configure(state=tk.ACTIVE)
+        page.buttonpanel.buttons['Back'].configure(state=tk.DISABLED)
 
     def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
         self.model.updatesubtitlelist(language, hd, hi, corrected)
