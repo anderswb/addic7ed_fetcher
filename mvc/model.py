@@ -48,7 +48,7 @@ class Model:
 
         # Remove all season tabs, so we start on a clean slate
         for tab in page.notebook.tabs():
-            SubtitleSelectionPage.notebook.forget(tab)
+            page.notebook.forget(tab)
 
         columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
         # TODO: Move some of this stuff to the view
