@@ -6,7 +6,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.font import Font
 import time
-from re import findall
+import re
 from os import path
 from os import makedirs
 
@@ -196,18 +196,22 @@ class Model:
             content = request.content  # get the file content
 
             success = True
-            if content[0:9] == b'<!DOCTYPE':
-                #messagebox.showerror('Download limit', 'Daily download count exceeded.')
-                print('Download limit')
+            if content[0:9] == b'<!DOCTYPE':  # check if the received data was a html file instead of a sub
+                htmlstring = content.decode("utf-8")
+                if re.findall(r'download limit', htmlstring):
+                    #messagebox.showerror('Download limit', 'Daily download count exceeded.')
+                    print('Download limit')
+                    break
+
                 success = False
-                break
             else:
                 # get the filename from the header
                 headers = request.headers
                 if 'Content-Disposition' in headers:  # check if a filename was included
                     content_disp = headers['Content-Disposition']
-                    dir = './downloads'
-                    filename = findall(r'filename="(.+)"', content_disp)[0]
+                    dir = 'downloads'
+                    filename = re.findall(r'filename="(.+)"', content_disp)[0]
+                    filename = re.sub(r'[\\/:*?"<>|]', '_', filename)  # remove any not allowed chars
                     filename = path.join(dir, filename)
 
                     if not path.exists(dir):
