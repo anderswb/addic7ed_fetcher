@@ -178,8 +178,6 @@ class Model:
                 # for all selections:
                 selection_index = seasontree.index(selection)  # get selection
                 selected_dataset = self.displayedsubs[season][selection_index]  # get dataset matching the selection
-                # add the rest of the url
-                selected_dataset['dl link'] = 'http://www.addic7ed.com' + selected_dataset['dl link']
                 self.substodownload.append(selected_dataset)  # append the dataset to the list of subs to download
 
         for sub in self.substodownload:

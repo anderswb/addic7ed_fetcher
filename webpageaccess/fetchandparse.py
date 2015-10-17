@@ -95,7 +95,7 @@ class FetchAndParse:
                                 'hi': hi[i],
                                 'corrected': corrected[i],
                                 'hd': hd[i],
-                                'dl link': dl_links[i]})
+                                'dl link': 'http://www.addic7ed.com' + dl_links[i]})
         return episodelist
 
     @staticmethod
