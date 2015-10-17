@@ -171,6 +171,10 @@ class Model:
     def add_downloads(self):
         self.substodownload = []
 
+        # clear the download list
+        page = self.view.frames[DownloadPage]
+        page.statustree.delete(*page.statustree.get_children())
+
         # find all selections in all trees
         for (season, seasontree) in self.subtitletrees.items():
             for selection in seasontree.selection():
