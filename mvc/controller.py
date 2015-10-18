@@ -70,8 +70,10 @@ class Controller:
         page.buttonpanel.buttons['Cancel'].configure(state=tk.ACTIVE)
         page.buttonpanel.buttons['Back'].configure(state=tk.DISABLED)
 
-    def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
-        self.model.updatesubtitlelist(language, hd, hi, corrected)
+    #def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
+    #    self.model.updatesubtitlelist(language, hd, hi, corrected)
+    def subtitleselectionpage_filerchanged(self):
+        self.model.updateallsubtitlelists()
 
     def downloadpage_okpressed(self):
         print('ok')

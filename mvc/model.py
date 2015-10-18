@@ -50,39 +50,10 @@ class Model:
         for tab in page.notebook.tabs():
             page.notebook.forget(tab)
 
-        columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
-        # TODO: Move some of this stuff to the view
         for season in self.seasons:
             # Fetch the available for the current season
             self.subtitles[season] = self.fetchandparser.getsubtitlelist(show[0], season)
-
-            frame = ttk.Frame(page.notebook)  # use the notebook frame
-
-            # add new tab, with the name of the season
-            page.notebook.add(frame, text="S{:02}".format(season))
-
-            # Create a treeview for the current season, and add it to the tab
-            tree = ttk.Treeview(frame, columns=columns, show='headings')
-            tree.grid(row=0, column=0, sticky='nsew')  # add the tree to the view
-
-            # Create y scrollbar, and add it to the tree and grid
-            ysb = ttk.Scrollbar(frame, orient='vertical', command=tree.yview)
-            tree.configure(yscroll=ysb.set)
-            ysb.grid(row=0, column=1, sticky='ns')
-
-            # make sure that the frame takes up the entire room in the notebook tab
-            tk.Grid.grid_rowconfigure(frame, 0, weight=1)
-            tk.Grid.grid_columnconfigure(frame, 0, weight=1)
-
-            # Put in the headings on the new tree
-            for column in columns:
-                tree.heading(column, text=column.title())
-                tree.column(column, width=Font().measure(column.title()))
-
-            # configure the tags used for alternating the colors of the rows
-            tree.tag_configure('white', background='white')
-            tree.tag_configure('gray', background='lightgray')
-
+            tree = self.view.frames[SubtitleSelectionPage].addtab(season)  # add a new tab with a treeview
             self.subtitletrees[season] = tree  # store the tree for later use
 
         # Populate languages filter dropdown menu
@@ -97,7 +68,69 @@ class Model:
                              command=lambda value=language:
                              page.filterpanel.language_dropdownchanged(value))
 
-        self.updatesubtitlelist('All languages', 'dontcare', 'dontcare', 'dontcare')
+        self.updateallsubtitlelists()
+
+    def clearalldisplayedsubs(self):
+        self.displayedsubs = {}  # clear the list of displayed subtitles
+        for season in self.subtitles:
+            tree = self.subtitletrees[season]
+            tree.delete(*tree.get_children())  # clear the season tree
+
+    def updateallsubtitlelists(self):
+        self.clearalldisplayedsubs()
+        for (season, dataset) in self.subtitles.items():
+            page = self.view.frames[SubtitleSelectionPage]
+            corrected = page.filterpanel.corrected.get()
+            hi = page.filterpanel.hi.get()
+            hd = page.filterpanel.hd.get()
+            language = page.filterpanel.language.get()
+            self.updateseasonsubtitlelist(season, dataset, language, hd, hi, corrected)
+
+    def updateseasonsubtitlelist(self, season, seasondataset, language, hd, hi, corrected):
+        tree = self.subtitletrees[season]
+
+        colortag = 'white'  # first row is always white
+        last_episode = None
+
+        self.displayedsubs[season] = []
+        # loop through all of the available subs in the season
+        for episodesub in seasondataset:
+
+            # if all of the filter conditions are true
+            if self.displaysubtitle(episodesub, corrected, hd, hi, language):
+                # convert the dict to a list, as needed by the treeview
+                data = []
+                for label in FetchAndParse.dataset_labels:
+                    data.append(episodesub[label])
+
+                # Find the colortag for the current row
+                if episodesub['episode'] != last_episode and last_episode is not None:
+                    if colortag == 'white':
+                        colortag = 'gray'
+                    else:
+                        colortag = 'white'
+                last_episode = episodesub['episode']
+
+                # add the list to the tree
+                tree.insert('', 'end', values=data, tags = (colortag,))
+
+                # add the dataset to the list of displayed subs, making it easier to download them later on
+                self.displayedsubs[season].append(episodesub)
+
+    def displaysubtitle(self, episode_dataset, corrected, hd, hi, language):
+        languageshow = language == "All languages" or \
+                       language == episode_dataset['language']
+        hdshow = hd == 'dontcare' or \
+                 (episode_dataset['hd'] == True and hd == 'on') or \
+                 (episode_dataset['hd'] == False and hd == 'off')
+        hishow = hi == 'dontcare' or \
+                 (episode_dataset['hi'] == True and hi == 'on') or \
+                 (episode_dataset['hi'] == False and hi == 'off')
+        corshow = corrected == 'dontcare' or \
+                  (episode_dataset['corrected'] == True and corrected == 'on') or \
+                  (episode_dataset['corrected'] == False and corrected == 'off')
+
+        return corshow and  hdshow and hishow and languageshow
 
     def updatesubtitlelist(self, language, hd, hi, corrected):
         self.displayedsubs = {}
@@ -113,20 +146,7 @@ class Model:
             last_episode = None
             for episodesub in dataset:
 
-                languageshow = language == "All languages" or \
-                               language == episodesub['language']
-
-                hdshow = hd == 'dontcare' or \
-                    (episodesub['hd'] == True and hd == 'on') or \
-                    (episodesub['hd'] == False and hd == 'off')
-
-                hishow = hi == 'dontcare' or \
-                    (episodesub['hi'] == True and hi == 'on') or \
-                    (episodesub['hi'] == False and hi == 'off')
-
-                corshow = corrected == 'dontcare' or \
-                    (episodesub['corrected'] == True and corrected == 'on') or \
-                    (episodesub['corrected'] == False and corrected == 'off')
+                corshow, hdshow, hishow, languageshow = self.displaysubtitle(episodesub, corrected, hd, hi, language)
 
                 # if all of the filter conditions are true
                 if hdshow and hishow and corshow and languageshow:

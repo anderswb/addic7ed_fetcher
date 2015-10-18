@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter.font import Font
 
 import pages.page as page
 
@@ -26,6 +27,38 @@ class SubtitleSelectionPage(page.Page):
         self.filterpanel.pack(side=tk.TOP, fill=tk.X)
         self.notebook.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         self.buttonpanel.pack(side=tk.BOTTOM, fill=tk.X)
+
+    def addtab(self, season):
+        columns = ('ep', 'name', 'lang', 'vers', 'completed', 'hi', 'corrected', 'hd')
+
+        frame = ttk.Frame(self.notebook)  # use the notebook frame
+
+        # add new tab, with the name of the season
+        self.notebook.add(frame, text="S{:02}".format(season))
+
+        # Create a treeview for the current season, and add it to the tab
+        tree = ttk.Treeview(frame, columns=columns, show='headings')
+        tree.grid(row=0, column=0, sticky='nsew')  # add the tree to the view
+
+        # Create y scrollbar, and add it to the tree and grid
+        ysb = ttk.Scrollbar(frame, orient='vertical', command=tree.yview)
+        tree.configure(yscroll=ysb.set)
+        ysb.grid(row=0, column=1, sticky='ns')
+
+        # make sure that the frame takes up the entire room in the notebook tab
+        tk.Grid.grid_rowconfigure(frame, 0, weight=1)
+        tk.Grid.grid_columnconfigure(frame, 0, weight=1)
+
+        # Put in the headings on the new tree
+        for column in columns:
+            tree.heading(column, text=column.title())
+            tree.column(column, width=Font().measure(column.title()))
+
+        # configure the tags used for alternating the colors of the rows
+        tree.tag_configure('white', background='white')
+        tree.tag_configure('gray', background='lightgray')
+
+        return tree
 
 
 class FilterPanel(tk.Frame):
