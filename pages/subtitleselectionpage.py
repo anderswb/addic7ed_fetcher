@@ -52,7 +52,6 @@ class SubtitleSelectionPage(page.Page):
         # Put in the headings on the new tree
         for column in columns:
             tree.heading(column, text=column.title())
-            tree.column(column, width=Font().measure(column.title()))
 
         # configure the tags used for alternating the colors of the rows
         tree.tag_configure('white', background='white')
@@ -121,10 +120,7 @@ class FilterPanel(tk.Frame):
         self.filterchanged()
 
     def filterchanged(self):
-        self.master.controller.subtitleselectionpage_filterchanged(self.language.get(),
-                                                                   self.hd.get(),
-                                                                   self.hi.get(),
-                                                                   self.corrected.get())
+        self.master.controller.subtitleselectionpage_filterchanged()
 
     @staticmethod
     def checkboxchange(last_state, variable_ref, checkbox_ref):

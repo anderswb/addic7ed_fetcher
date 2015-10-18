@@ -8,6 +8,8 @@ from pages.selectshowpage import SelectShowPage as SelectShowPage
 from pages.subtitleselectionpage import SubtitleSelectionPage as SubtitleSelectionPage
 from pages.downloadpage import DownloadPage as DownloadPage
 
+from threading import Thread
+
 import threading
 
 __author__ = 'Anders'
@@ -20,7 +22,7 @@ class Controller:
         self.root.geometry("500x400")
         self.root.minsize(width=500, height=400)
 
-        self.model = Model(self.view)  # create the model object
+        self.model = Model(self.view, self)  # create the model object
         self.model.updatetitle()
 
         self.view.frames[SelectShowPage].searchentry.bind("<Return>", self.selectshowpage_filterchanged)
@@ -46,8 +48,8 @@ class Controller:
         curselection = self.view.frames[SelectShowPage].showslistbox.curselection()
         if curselection:  # if an item is selected
             selectedshow = curselection[0]  # get the listbox selection
-            self.model.displayshow(selectedshow)  # update the model, and in turn the view
             self.view.show_frame(SubtitleSelectionPage)  # show the new frame
+            Thread(target=self.model.displayshow, args=(selectedshow, )).start() # update the model, and update the view
 
     def selectshowpage_exitpressed(self):
         quit()
@@ -72,7 +74,7 @@ class Controller:
 
     #def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
     #    self.model.updatesubtitlelist(language, hd, hi, corrected)
-    def subtitleselectionpage_filerchanged(self):
+    def subtitleselectionpage_filterchanged(self):
         self.model.updateallsubtitlelists()
 
     def downloadpage_okpressed(self):

@@ -19,7 +19,8 @@ __author__ = 'Anders'
 
 class Model:
 
-    def __init__(self, view):
+    def __init__(self, view, controller):
+        self.controller = controller
         self.fetchandparser = FetchAndParse()
         self.view = view
 
@@ -56,6 +57,8 @@ class Model:
             tree = self.view.frames[SubtitleSelectionPage].addtab(season)  # add a new tab with a treeview
             self.subtitletrees[season] = tree  # store the tree for later use
 
+        self.updateallsubtitlelists()
+
         # Populate languages filter dropdown menu
         languages = self.fetchandparser.getlanguages(self.subtitles)
         menu = page.filterpanel.dropdown["menu"]
@@ -67,8 +70,6 @@ class Model:
             menu.add_command(label=language,
                              command=lambda value=language:
                              page.filterpanel.language_dropdownchanged(value))
-
-        self.updateallsubtitlelists()
 
     def clearalldisplayedsubs(self):
         self.displayedsubs = {}  # clear the list of displayed subtitles
