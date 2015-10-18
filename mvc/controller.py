@@ -10,8 +10,6 @@ from pages.downloadpage import DownloadPage as DownloadPage
 
 from threading import Thread
 
-import threading
-
 __author__ = 'Anders'
 
 
@@ -49,7 +47,8 @@ class Controller:
         if curselection:  # if an item is selected
             selectedshow = curselection[0]  # get the listbox selection
             self.view.show_frame(SubtitleSelectionPage)  # show the new frame
-            Thread(target=self.model.displayshow, args=(selectedshow, )).start() # update the model, and update the view
+            thread = Thread(target=self.model.displayshow, args=(selectedshow, ))  # update the model, update the view
+            thread.start()
 
     def selectshowpage_exitpressed(self):
         quit()
@@ -63,7 +62,7 @@ class Controller:
 
     def subtitleselectionpage_downloadpressed(self):
         self.model.add_downloads()
-        thread = threading.Thread(target=self.model.downloadandsave)
+        thread = Thread(target=self.model.downloadandsave)
         thread.start()
         self.view.show_frame(DownloadPage)
 
@@ -72,8 +71,6 @@ class Controller:
         page.buttonpanel.buttons['Cancel'].configure(state=tk.ACTIVE)
         page.buttonpanel.buttons['Back'].configure(state=tk.DISABLED)
 
-    #def subtitleselectionpage_filterchanged(self, language, hd, hi, corrected):
-    #    self.model.updatesubtitlelist(language, hd, hi, corrected)
     def subtitleselectionpage_filterchanged(self):
         self.model.updateallsubtitlelists()
 
